@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "579401546155",
+    "project_id": "sign-talk-f78c3",
+    "storage_bucket": "sign-talk-f78c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:579401546155:android:2bd0d2673c9664c3973aee",
+        "android_client_info": {
+          "package_name": "com.example.signtalk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA23716XBoZMPTYJBCd-HCl7lmB4r3YcU8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
