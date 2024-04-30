@@ -1,7 +1,6 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sign_talk_app/controllers/data_controller.dart';
 
 import 'package:sign_talk_app/core/utils/AppRouter.dart';
 import 'package:sign_talk_app/models/drawer_item_model.dart';
@@ -15,58 +14,91 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  /*List<DrawerItem> items = [
-    DrawerItemModel(
-      title: 'My Profile',
-      icon: Icons.perm_identity,
-      onTap: () => GoRouter.of(context).push(AppRouter.kMyProfile),
-    ),
-    DrawerItemModel(title: 'Devices', icon: Icons.device_unknown, onTap: () {
-          () => GoRouter.of(context).push(AppRouter.kSearchForDevice);
-    }),
-    DrawerItemModel(title: 'Tutorial', icon: Icons.history_edu, onTap: () {}),
-    DrawerItemModel(
-        title: 'Overview', icon: Icons.interests_outlined, onTap: () {}),
-  ];*/
-
-  List<DrawerItem> items = [
-    const DrawerItem(
-        title: 'My Profile',
-        icon: Icons.perm_identity,
-        location: AppRouter.kMyProfile),
-    const DrawerItem(
-        title: 'Devices',
-        icon: Icons.device_unknown,
-        location: AppRouter.kSearchForDevice),
-    const DrawerItem(
-        title: 'Tutorial',
-        icon: Icons.history_edu,
-        location: AppRouter.kSearchForDevice),
-    const DrawerItem(
-        title: 'Overview',
-        icon: Icons.interests_outlined,
-        location: AppRouter.kSearchForDevice),
-  ];
-  int activeIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: const Color(0xffDBDBDB),
-      child: Column(
+      child: ListView(
         children: [
-          const DrawerHeader(
-              child: Icon(
-            Icons.sign_language,
-            size: 48,
-          )),
-          ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                return items[index];
-              }),
+          const DrawerHeader(child: Icon(Icons.sign_language, size: 50)),
+          DrawerItem(
+            title: 'Home',
+            icon: Icons.home,
+            location: AppRouter.kHomeView,
+          ),
+          DrawerItem(
+            title: 'My Profile',
+            icon: Icons.perm_identity,
+            location: AppRouter.kSelectProfile,
+          ),
+          DrawerItem(
+            title: 'Devices',
+            icon: Icons.device_unknown,
+            location: AppRouter.kSearchForDevice,
+          ),
+          DrawerItem(
+            title: 'Tutorial',
+            icon: Icons.history_edu,
+            location: AppRouter.kSearchForDevice,
+          ),
+          const Divider(),
+          const Padding(
+            padding: EdgeInsets.only(left: 7),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  'Setting & Preferencrs',
+                  style: TextStyle(fontSize: 10, color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+          DrawerItem(
+            title: 'Notification',
+            icon: Icons.notification_add,
+            location: AppRouter.kSearchForDevice,
+          ),
+          DrawerItem(
+            title: 'Language',
+            icon: Icons.translate_outlined,
+            location: AppRouter.kChooseLanguage,
+          ),
+          DrawerItem(
+            title: 'Dark mode',
+            icon: Icons.dark_mode,
+            location: AppRouter.kSearchForDevice,
+            trailingIcon: Icons.toggle_on_sharp,
+          ),
+          const Divider(),
+          const Padding(
+            padding: EdgeInsets.only(left: 7),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  'Support',
+                  style: TextStyle(fontSize: 10, color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+          DrawerItem(
+            title: 'Help Center',
+            icon: Icons.message_outlined,
+            location: AppRouter.kSearchForDevice,
+          ),
+          DrawerItem(
+            title: 'Report A Bug',
+            icon: Icons.flag_outlined,
+            location: AppRouter.kSearchForDevice,
+          ),
+          DrawerItem(
+            title: 'Log Out',
+            icon: Icons.logout,
+            location: AppRouter.kSearchForDevice,
+            iconColor: Colors.red,
+            textColor: Colors.red,
+          ),
         ],
       ),
     );
@@ -74,25 +106,56 @@ class _CustomDrawerState extends State<CustomDrawer> {
 }
 
 class DrawerItem extends StatelessWidget {
-  const DrawerItem(
-      {super.key,
-      required this.title,
-      required this.icon,
-      required this.location});
+  DrawerItem({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.location,
+    this.iconColor,
+    this.textColor,
+    this.trailingIcon,
+  });
 
   final String title;
   final IconData icon;
   final String location;
+  bool isSelected = false;
+  Color? iconColor = Colors.black;
+  Color? textColor = Colors.black;
+  IconData? trailingIcon = Icons.toggle_on_sharp;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        GoRouter.of(context).push(location);
-      },
+    final DataController controller = DataController();
+    isSelected = controller.selectedDrawerPage == title;
+
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: const BorderRadiusDirectional.only(
+            bottomEnd: Radius.circular(30),
+            topEnd: Radius.circular(30),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: isSelected
+                  ? const Color(0xFF4CB6BD).withOpacity(0.5)
+                  : Colors.transparent,
+              spreadRadius: 1,
+            ),
+          ]),
       child: ListTile(
+        iconColor: iconColor,
+        onTap: () {
+          controller.selectedDrawerPage = title;
+          Navigator.pop(context);
+          GoRouter.of(context).push(location);
+        },
         leading: Icon(icon),
-        title: Text(title),
+        trailing: trailingIcon != null ? Icon(trailingIcon) : null,
+        title: Text(
+          title,
+          style: TextStyle(color: textColor),
+        ),
       ),
     );
   }
