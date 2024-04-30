@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
 class DataController extends ChangeNotifier {
-  String gloveText = 'Welcome';
+  String gloveText = 'Welcome!!!';
   bool startListenToAPI = false;
+  String selectedDrawerPage = 'Home';
 
   void changeGloveDataText(String recievedText) {
     gloveText = recievedText;

@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:http/http.dart' as http;
 import 'package:sign_talk_app/controllers/data_controller.dart';
+
+import '../../curved_container.dart';
 
 class SearchForDevice extends StatefulWidget {
   const SearchForDevice({super.key});
@@ -157,22 +160,19 @@ class _SearchForDeviceState extends State<SearchForDevice> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         foregroundColor: Colors.black,
         backgroundColor: const Color(0xffFAFAFA),
         elevation: 0,
         centerTitle: true,
-        //leading:const Icon(Icons.arrow_back_ios,color: Colors.black,),
         title: const Text(
           'Devices',
           style: TextStyle(color: Colors.black),
         ),
-      ),
+      ),*/
       body: Column(
         children: [
-          const SizedBox(
-            height: 45,
-          ),
+          const CurvedBottomContainer(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
@@ -183,14 +183,18 @@ class _SearchForDeviceState extends State<SearchForDevice> {
                   },
                   child: Text(
                     isScanning ? 'Scanning...' : 'Scan Devices',
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style: TextStyle(
+                      fontSize: 18,
                       fontWeight: FontWeight.w400,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                 ),
                 const Spacer(),
-                Image.asset('assets/images/loading-16-svgrepo-com 1.png'),
+                Image.asset(
+                  'assets/images/loading-16-svgrepo-com 1.png',
+                  color: Theme.of(context).primaryColor,
+                ),
               ],
             ),
           ),
@@ -253,13 +257,13 @@ class _SearchForDeviceState extends State<SearchForDevice> {
           ),
           Text(
             bluetoothConnected,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 20,
-              color: Colors.blue,
+              color: Theme.of(context).primaryColor,
               fontWeight: FontWeight.w500,
             ),
           ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 70),
         ],
       ),
     );
