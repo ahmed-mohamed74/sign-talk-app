@@ -32,8 +32,8 @@ class _HomeViewState extends State<HomeView> {
             child: Image.asset(
               AssetsData.slider,
             )),
-        actions: [
-          const Padding(
+        actions: const [
+          Padding(
             padding: EdgeInsets.all(8.0),
             child: Icon(
               Icons.sign_language,
