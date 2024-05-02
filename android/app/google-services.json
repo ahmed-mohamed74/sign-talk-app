@@ -7,12 +7,25 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:579401546155:android:2bd0d2673c9664c3973aee",
+        "mobilesdk_app_id": "1:579401546155:android:14ffed7b127d7880973aee",
         "android_client_info": {
           "package_name": "com.example.signtalk"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "579401546155-3ko6utf1ff58g6n08sdfrm21s4q36to3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.signtalk",
+            "certificate_hash": "c14b2c703712dce498dab04196c0341bd1c138fe"
+          }
+        },
+        {
+          "client_id": "579401546155-9cu72t3dtde53vvbjkijbd3ps80833b9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA23716XBoZMPTYJBCd-HCl7lmB4r3YcU8"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "579401546155-9cu72t3dtde53vvbjkijbd3ps80833b9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "579401546155-29ma13rrlsaf4v2l8df09cq9jh27sunh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.signtalk"
+              }
+            }
+          ]
         }
       }
     }

@@ -142,7 +142,8 @@ class SignInPage extends StatelessWidget {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      GoRouter.of(context).pop();
+                                      GoRouter.of(context)
+                                          .push(AppRouter.kSignUpPage);
                                     },
                                     child: Text(
                                       'Sign Up',
