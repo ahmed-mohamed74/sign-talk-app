@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:lottie/lottie.dart';
-import 'package:sign_talk_app/Features/widgets/custom-drawer.dart';
-import 'package:sign_talk_app/Features/widgets/method-item-listview.dart';
+import 'package:sign_talk_app/view/widgets/custom-drawer.dart';
 import 'package:sign_talk_app/core/utils/assets.dart';
 
-import '../../../controllers/data_controller.dart';
+import '../../controllers/data_controller.dart';
 import 'package:provider/provider.dart';
-import '../../widgets/data-item.dart';
+import '../widgets/data-item.dart';
+import '../widgets/method-item-listview.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});

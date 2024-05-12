@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sign_talk_app/Features/splash/presentation/views/widgets/sliding_text.dart';
+import 'package:sign_talk_app/view/screens/splash/widgets/sliding_text.dart';
 import 'package:sign_talk_app/core/utils/AppRouter.dart';
 import 'package:sign_talk_app/core/utils/assets.dart';
 
@@ -21,7 +21,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
     super.initState();
     initSlidingAnimation();
     Future.delayed(const Duration(seconds: 3), () {
-      GoRouter.of(context).push(AppRouter.kSearchForDevice);
+      GoRouter.of(context).pushReplacement(AppRouter.kSearchForDevice);
     });
   }
 

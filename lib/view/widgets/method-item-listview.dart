@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sign_talk_app/Features/sign/views/method-item.dart';
+import 'package:sign_talk_app/view/widgets/method-item.dart';
+import 'package:sign_talk_app/core/utils/constants.dart';
 
 import '../../controllers/data_controller.dart';
 
@@ -9,16 +10,17 @@ class MethodItemListview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 55,
+      height: 60,
       child: Padding(
-        padding: const EdgeInsets.only(left: 16.0),
+        padding: const EdgeInsets.only(left: 26.0),
         child: ListView.builder(
-            itemCount: 6,
+            itemCount: modes.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.all(7.0),
                 child: MethodItem(
+                  modeText: modes[index],
                   index: index,
                 ),
               );

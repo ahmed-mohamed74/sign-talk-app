@@ -7,8 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:sign_talk_app/controllers/data_controller.dart';
 
-import '../../core/utils/AppRouter.dart';
-import '../../curved_container.dart';
+import '../../../core/utils/AppRouter.dart';
+import '../../widgets/curved_container.dart';
 
 class SearchForDevice extends StatefulWidget {
   const SearchForDevice({super.key});
@@ -23,7 +23,6 @@ class _SearchForDeviceState extends State<SearchForDevice> {
   List<BluetoothDevice> devices = [];
   bool isScanning = false;
 
-  //String gloveText = 'Welcome';
   String bluetoothConnected = 'Not Connected';
 
   @override
@@ -276,14 +275,14 @@ class _SearchForDeviceState extends State<SearchForDevice> {
                                     borderRadius: BorderRadius.circular(10))),
                           ),
                           onPressed: () {
-                            GoRouter.of(context).push(AppRouter.kHomeView);
+                            GoRouter.of(context).push(AppRouter.kSignInPage);
                           },
                           child: const Text('Next'),
                         ),
                       ),
                     ),
                   ),
-            /*AnimatedContainer(
+            AnimatedContainer(
               duration: const Duration(milliseconds: 1500),
               curve: Curves.easeIn,
               child: Padding(
@@ -298,13 +297,13 @@ class _SearchForDeviceState extends State<SearchForDevice> {
                           borderRadius: BorderRadius.circular(10))),
                     ),
                     onPressed: () {
-                      GoRouter.of(context).push(AppRouter.kHomeView);
+                      GoRouter.of(context).push(AppRouter.kSignInPage);
                     },
                     child: const Text('Next'),
                   ),
                 ),
               ),
-            ),*/
+            ),
           ],
         ),
       ),

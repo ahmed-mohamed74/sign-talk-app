@@ -3,16 +3,17 @@ import 'package:sign_talk_app/controllers/data_controller.dart';
 import 'package:provider/provider.dart';
 
 class MethodItem extends StatelessWidget {
-  const MethodItem({super.key, required this.index});
+  const MethodItem({super.key, required this.index, required this.modeText});
 
   final int index;
+  final String modeText;
 
   @override
   Widget build(BuildContext context) {
     return Consumer<DataController>(
       builder: (context, controller, _) {
         return Container(
-          width: 80,
+          width: 100,
           height: 30,
           decoration: ShapeDecoration(
             shape: RoundedRectangleBorder(
@@ -31,9 +32,9 @@ class MethodItem extends StatelessWidget {
                 onPressed: () {
                   controller.changeGloveMode(index);
                 },
-                child: const Text(
-                  'School',
-                  style: TextStyle(
+                child: Text(
+                  modeText,
+                  style: const TextStyle(
                     color: Colors.white,
                   ),
                 ),
