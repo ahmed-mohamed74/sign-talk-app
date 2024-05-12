@@ -45,6 +45,8 @@ dependencies:
   http:
   flutter_switch: ^0.3.2
   lottie:
+  provider:
+  flutter_translate:
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +74,7 @@ flutter:
   assets:
    - assets/images/
    - assets/
+   - assets/i18n/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -7,54 +7,57 @@ class SelectProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
         body: Column(
-          children: [
-            Stack(children: [
-              CurvedBottomContainer(),
-              const Padding(
-                padding: EdgeInsets.only(top: 120),
-                child: Center(
-                  child: CircleAvatar(
-                      radius: 40,
-                      backgroundImage: AssetImage('assets/images/Group.png'),
-                      backgroundColor: Colors.white),
-                ),
-              )
-            ]),
-            const SizedBox(
-              height: 5,
+      children: [
+        Stack(children: [
+          CurvedBottomContainer(
+            press: () {
+              Navigator.pop(context);
+            },
+          ),
+          const Padding(
+            padding: EdgeInsets.only(top: 120),
+            child: Center(
+              child: CircleAvatar(
+                  radius: 40,
+                  backgroundImage: AssetImage('assets/images/Group.png'),
+                  backgroundColor: Colors.white),
             ),
-            const Text(
-              'shadan khalid',
-              style: TextStyle(color: Colors.grey),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ListItem(
-                      text: 'E-mail',
-                      icon: Icons.email_rounded,
-                      mail: 'Shadan_Khalid18@gmail.com'),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  ListItem(text: 'Phone', icon: Icons.phone, mail: '01018517555'),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  ListItem(
-                      text: 'Password', icon: Icons.lock, mail: 'om12***09yu'),
-                ],
+          )
+        ]),
+        const SizedBox(
+          height: 5,
+        ),
+        const Text(
+          'shadan khalid',
+          style: TextStyle(color: Colors.grey),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        const Padding(
+          padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ListItem(
+                  text: 'E-mail',
+                  icon: Icons.email_rounded,
+                  mail: 'Shadan_Khalid18@gmail.com'),
+              SizedBox(
+                height: 10,
               ),
-            )
-          ],
-        ));
+              ListItem(text: 'Phone', icon: Icons.phone, mail: '01018517555'),
+              SizedBox(
+                height: 10,
+              ),
+              ListItem(text: 'Password', icon: Icons.lock, mail: 'om12***09yu'),
+            ],
+          ),
+        )
+      ],
+    ));
   }
 }
 

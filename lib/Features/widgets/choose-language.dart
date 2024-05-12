@@ -7,10 +7,14 @@ class ChooseLanguage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: Column(
         children: [
-          CurvedBottomContainer(),
+          CurvedBottomContainer(
+            press: () {
+              Navigator.pop(context);
+            },
+          ),
           const SizedBox(
             height: 30,
           ),

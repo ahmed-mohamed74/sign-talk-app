@@ -31,11 +31,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
             location: AppRouter.kSelectProfile,
           ),
           DrawerItem(
-            title: 'Devices',
-            icon: Icons.device_unknown,
-            location: AppRouter.kSearchForDevice,
-          ),
-          DrawerItem(
             title: 'Tutorial',
             icon: Icons.history_edu,
             location: AppRouter.kSearchForDevice,
@@ -47,17 +42,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  'Setting & Preferencrs',
+                  'Setting & Preferences',
                   style: TextStyle(fontSize: 10, color: Colors.grey),
                 ),
               ],
             ),
           ),
-          DrawerItem(
+          /*DrawerItem(
             title: 'Notification',
             icon: Icons.notification_add,
             location: AppRouter.kSearchForDevice,
-          ),
+          ),*/
           DrawerItem(
             title: 'Language',
             icon: Icons.translate_outlined,

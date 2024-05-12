@@ -4,7 +4,14 @@ import 'package:flutter/material.dart';
 import 'BottomCurrved.dart';
 
 class CurvedBottomContainer extends StatelessWidget {
-  const CurvedBottomContainer({super.key,});
+  const CurvedBottomContainer({
+    super.key,
+    required this.press,
+    this.icon = Icons.arrow_back_ios,
+  });
+
+  final IconData icon;
+  final VoidCallback press;
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +25,9 @@ class CurvedBottomContainer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios,
+              onPressed: press,
+              icon: Icon(
+                icon,
                 color: Colors.white,
               ),
             ),

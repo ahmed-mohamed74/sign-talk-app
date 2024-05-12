@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class DataItem extends StatelessWidget {
   const DataItem(
@@ -20,7 +21,7 @@ class DataItem extends StatelessWidget {
           Row(
             children: [
               Text(
-                upperText,
+                translate(upperText),
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -28,9 +29,28 @@ class DataItem extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              const Icon(
-                Icons.settings,
-                color: Colors.black54,
+              PopupMenuButton<String>(
+                icon: const Icon(
+                  Icons.settings,
+                  color: Colors.black54,
+                ),
+                onSelected: (String value) {
+                  if (value == 'English') {
+                    changeLocale(context, 'en_US');
+                  } else if (value == 'Arabic') {
+                    changeLocale(context, 'ar');
+                  }
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  const PopupMenuItem<String>(
+                    value: 'English',
+                    child: Text('English'),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'Arabic',
+                    child: Text('Arabic'),
+                  ),
+                ],
               ),
             ],
           ),
@@ -50,7 +70,7 @@ class DataItem extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    innerText,
+                    translate(innerText),
                     style: TextStyle(
                       color: color,
                       fontSize: 18,
