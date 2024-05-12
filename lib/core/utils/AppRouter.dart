@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sign_talk_app/Features/sign/views/home_view.dart';
 import 'package:sign_talk_app/Features/splash/presentation/views/splash-view.dart';
 import 'package:sign_talk_app/Features/widgets/choose-language.dart';
-import 'package:sign_talk_app/Features/widgets/search_for_device.dart';
+import 'package:sign_talk_app/Features/search_for_device/search_for_device.dart';
 import 'package:sign_talk_app/Features/widgets/select-profile.dart';
 
 import '../../Features/sign/views/sign_in.dart';

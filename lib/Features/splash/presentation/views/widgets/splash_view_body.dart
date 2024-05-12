@@ -18,11 +18,10 @@ class _SplashViewBodyState extends State<SplashViewBody>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initSlidingAnimation();
     Future.delayed(const Duration(seconds: 3), () {
-      GoRouter.of(context).push(AppRouter.kSignInPage);
+      GoRouter.of(context).push(AppRouter.kSearchForDevice);
     });
   }
 
