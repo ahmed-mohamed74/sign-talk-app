@@ -47,6 +47,8 @@ dependencies:
   lottie:
   provider:
   flutter_translate:
+  flutter_tts: ^3.8.3
+  speech_to_text: ^6.3.0
 
 dev_dependencies:
   flutter_test:

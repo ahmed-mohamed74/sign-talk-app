@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sign_talk_app/Features/widgets/custom_button.dart';
-import 'package:sign_talk_app/Features/widgets/generator-circle.dart';
+import 'package:sign_talk_app/view/widgets/custom_button.dart';
 import 'package:sign_talk_app/core/utils/AppRouter.dart';
 import 'dart:ui';
 import 'package:sign_talk_app/core/utils/assets.dart';
 import 'package:sign_talk_app/core/utils/styles.dart';
+
+import '../../widgets/generator-circle.dart';
 
 class SignInPage extends StatelessWidget {
   SignInPage({super.key});
@@ -38,7 +39,7 @@ class SignInPage extends StatelessWidget {
               Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  const Positioned(
+                   const Positioned(
                     left: 220,
                     top: -40,
                     //generator circle//===============

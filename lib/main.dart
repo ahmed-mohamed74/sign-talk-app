@@ -2,7 +2,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sign_talk_app/constants.dart';
+import 'package:sign_talk_app/core/utils/constants.dart';
 import 'package:sign_talk_app/core/utils/AppRouter.dart';
 
 import 'controllers/data_controller.dart';

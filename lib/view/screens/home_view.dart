@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:sign_talk_app/Features/widgets/custom-drawer.dart';
-import 'package:sign_talk_app/Features/widgets/method-item-listview.dart';
+import 'package:sign_talk_app/view/widgets/custom-drawer.dart';
 import 'package:sign_talk_app/core/utils/assets.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
-import '../../../controllers/data_controller.dart';
+import '../../controllers/data_controller.dart';
 import 'package:provider/provider.dart';
-import '../../widgets/data-item.dart';
+import '../widgets/data-item.dart';
+import '../widgets/method-item-listview.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -18,6 +20,63 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+  final FlutterTts _flutterTts = FlutterTts();
+  Map? _currentVoice;
+
+  final SpeechToText _speechToText = SpeechToText();
+  bool _speechEnabled = false;
+  String _wordsSpoken = '';
+  double _confidence = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    initTTS();
+    initSpeech();
+  }
+
+  void initSpeech() async {
+    _speechEnabled = await _speechToText.initialize();
+    setState(() {});
+  }
+
+  void _startListening() async {
+    await _speechToText.listen(onResult: _onSpeechResult);
+    setState(() {
+      _confidence = 0;
+    });
+  }
+
+  void _stopListening() async {
+    await _speechToText.stop();
+    setState(() {});
+  }
+
+  void _onSpeechResult(result) {
+    setState(() {
+      _wordsSpoken = "${result.recognizedWords}";
+      _confidence = result.confidence;
+    });
+  }
+
+  void initTTS() {
+    _flutterTts.getVoices.then((data) {
+      try {
+        List<Map> _voices = List<Map>.from(data);
+        _voices.where((_voice) => _voice["name"].contains("en")).toList();
+        setState(() {
+          _currentVoice = _voices.first;
+          setVoice(_currentVoice!);
+        });
+      } catch (e) {
+        print(e);
+      }
+    });
+  }
+
+  void setVoice(Map voice) {
+    _flutterTts.setVoice({"name": voice["name"], "locale": voice["locale"]});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +93,8 @@ class _HomeViewState extends State<HomeView> {
                 child: Image.asset(
                   AssetsData.slider,
                 )),
-            actions: [
-              const Padding(
+            actions: const [
+              Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Icon(
                   Icons.sign_language,
@@ -46,15 +105,6 @@ class _HomeViewState extends State<HomeView> {
             ],
             backgroundColor: const Color(0xffFAFAFA),
             elevation: 0,
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            backgroundColor: Theme.of(context).primaryColor,
-            child: const Icon(
-              Icons.keyboard_voice_outlined,
-              size: 30,
-              color: Colors.white,
-            ),
           ),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,15 +157,21 @@ class _HomeViewState extends State<HomeView> {
                       child: Column(
                         children: [
                           DataItem(
+                            flutterTts: _flutterTts,
                             upperText: 'Move your hand, please!',
                             color: Theme.of(context).primaryColor,
                             innerText: controller.gloveText,
                           ),
                           const Spacer(),
                           DataItem(
-                            upperText: 'Others',
+                            flutterTts: _flutterTts,
+                            upperText: _speechToText.isListening
+                                ? 'listening...'
+                                : _speechEnabled
+                                    ? 'Tap the mic to start listening... '
+                                    : 'Speech not available',
                             color: Colors.red,
-                            innerText: controller.gloveText,
+                            innerText: _wordsSpoken,
                           ),
                         ],
                       ),
@@ -134,9 +190,30 @@ class _HomeViewState extends State<HomeView> {
                       ),*/
                       ),
                     ),
+              if (_speechToText.isNotListening && _confidence > 0)
+                Center(
+                  child: Text(
+                    '${(_confidence * 100).toStringAsFixed(1)}%',
+                    style: const TextStyle(
+                        fontSize: 25, fontWeight: FontWeight.w200),
+                  ),
+                ),
               const Spacer(),
               const SizedBox(height: 110),
             ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            tooltip: 'Listen',
+            onPressed:
+              _speechToText.isListening ? _stopListening : _startListening,
+            backgroundColor: Theme.of(context).primaryColor,
+            child: Icon(
+              _speechToText.isNotListening
+                  ? Icons.mic_off
+                  : Icons.keyboard_voice_outlined,
+              size: 30,
+              color: Colors.white,
+            ),
           ),
         );
       },

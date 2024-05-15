@@ -7,8 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:sign_talk_app/controllers/data_controller.dart';
 
-import '../../core/utils/AppRouter.dart';
-import '../../curved_container.dart';
+import '../../../core/services/api_service.dart';
+import '../../../core/utils/AppRouter.dart';
+import '../../widgets/curved_container.dart';
 
 class SearchForDevice extends StatefulWidget {
   const SearchForDevice({super.key});
@@ -23,7 +24,6 @@ class _SearchForDeviceState extends State<SearchForDevice> {
   List<BluetoothDevice> devices = [];
   bool isScanning = false;
 
-  //String gloveText = 'Welcome';
   String bluetoothConnected = 'Not Connected';
 
   @override
@@ -93,7 +93,7 @@ class _SearchForDeviceState extends State<SearchForDevice> {
 
         // Send data to API
         if (controller.startListenToAPI == true) {
-          _sendDataToApi(receivedString, controller);
+          ApiService.sendSensorData(receivedString, controller);
         }
       }, onDone: () {
         // Handle connection closed event
@@ -106,7 +106,7 @@ class _SearchForDeviceState extends State<SearchForDevice> {
     }
   }
 
-  Future<void> _sendDataToApi(
+  /*Future<void> _sendDataToApi(
       String receivedString, DataController controller) async {
     final url = Uri.parse('http://smartglove.somee.com/api/Sensor_Data');
     print('headers:${receivedString.trim()}');
@@ -117,21 +117,22 @@ class _SearchForDeviceState extends State<SearchForDevice> {
     print('headers4:${numberStrings[3]}');
     print('headers5:${numberStrings[4]}');
 
-    final headers = {
+    *//*final headers = {
       'Sensor1_Value': numberStrings[0],
       'Sensor2_Value': numberStrings[1],
       'Sensor3_Value': numberStrings[2],
       'Sensor4_Value': numberStrings[3],
       'Sensor5_Value': numberStrings[4],
       'UserID': '1'
-    };
+    };*//*
     final body = jsonEncode({
       "Sensor1_Value": numberStrings[0],
       "Sensor2_Value": numberStrings[1],
       "Sensor3_Value": numberStrings[2],
       "Sensor4_Value": numberStrings[3],
       "Sensor5_Value": numberStrings[4],
-      "UserID": 1
+      'ModeId':controller.gloveMode,
+      "UserID": 1,
     });
 
     try {
@@ -157,7 +158,7 @@ class _SearchForDeviceState extends State<SearchForDevice> {
     } catch (e) {
       print('Error sending data to API: $e');
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -276,14 +277,14 @@ class _SearchForDeviceState extends State<SearchForDevice> {
                                     borderRadius: BorderRadius.circular(10))),
                           ),
                           onPressed: () {
-                            GoRouter.of(context).push(AppRouter.kHomeView);
+                            GoRouter.of(context).push(AppRouter.kSignInPage);
                           },
                           child: const Text('Next'),
                         ),
                       ),
                     ),
                   ),
-            /*AnimatedContainer(
+            AnimatedContainer(
               duration: const Duration(milliseconds: 1500),
               curve: Curves.easeIn,
               child: Padding(
@@ -304,7 +305,7 @@ class _SearchForDeviceState extends State<SearchForDevice> {
                   ),
                 ),
               ),
-            ),*/
+            ),
           ],
         ),
       ),
