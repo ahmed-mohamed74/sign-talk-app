@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 
 class DataItem extends StatelessWidget {
-  const DataItem(
-      {super.key,
-      required this.innerText,
-      required this.upperText,
-      required this.color});
+   const DataItem({
+    super.key,
+    required this.innerText,
+    required this.upperText,
+    required this.color, required this.flutterTts,
+  });
 
   final String innerText;
   final String upperText;
   final Color color;
+  final flutterTts;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,14 @@ class DataItem extends StatelessWidget {
                 ),
               ),
               const Spacer(),
+              IconButton(
+                onPressed: () async {
+                  // Speak the translated inner text
+                  await flutterTts.speak(translate(innerText));
+                },
+                icon: const Icon(Icons.volume_up),
+                color: Colors.black54,
+              ),
               PopupMenuButton<String>(
                 icon: const Icon(
                   Icons.settings,
@@ -59,26 +69,27 @@ class DataItem extends StatelessWidget {
           ),
           Center(
             child: Container(
-                width: double.infinity,
-                height: 55,
-                decoration: ShapeDecoration(
-                  color: const Color(0xFFF6F6F6),
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 1, color: color),
-                    borderRadius: BorderRadius.circular(10),
+              width: double.infinity,
+              height: 55,
+              decoration: ShapeDecoration(
+                color: const Color(0xFFF6F6F6),
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 1, color: color),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  translate(innerText),
+                  style: TextStyle(
+                    color: color,
+                    fontSize: 18,
+                    fontFamily: 'Lato',
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
-                child: Center(
-                  child: Text(
-                    translate(innerText),
-                    style: TextStyle(
-                      color: color,
-                      fontSize: 18,
-                      fontFamily: 'Lato',
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                )),
+              ),
+            ),
           )
         ],
       ),

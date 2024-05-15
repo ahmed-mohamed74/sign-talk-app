@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sign_talk_app/view/screens/edit_glove_mode/edit_glove_mode.dart';
 import 'package:sign_talk_app/view/screens/home_view.dart';
 import 'package:sign_talk_app/view/screens/splash/splash-view.dart';
 import 'package:sign_talk_app/view/screens/search_for_device/search_for_device.dart';
@@ -16,6 +17,7 @@ abstract class AppRouter {
   static const kSelectProfile = '/SelectProfile';
   static const kSearchForDevice = '/SearchForDevice';
   static const kChooseLanguage = '/chooseLanguage';
+  static const kEditWords = '/editWords';
   static final GoRouter router = GoRouter(
     routes: <RouteBase>[
       GoRoute(
@@ -49,6 +51,11 @@ abstract class AppRouter {
         path: kChooseLanguage,
         builder: (BuildContext context, GoRouterState state) =>
             const ChooseLanguage(),
+      ),
+      GoRoute(
+        path: kEditWords,
+        builder: (BuildContext context, GoRouterState state) =>
+            const EditGloveModePage(),
       ),
     ],
   );

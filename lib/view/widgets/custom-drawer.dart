@@ -35,6 +35,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
             icon: Icons.history_edu,
             location: AppRouter.kSearchForDevice,
           ),
+          DrawerItem(
+            title: 'Update Words',
+            icon: Icons.edit,
+            location: AppRouter.kEditWords,
+          ),
           const Divider(),
           const Padding(
             padding: EdgeInsets.only(left: 7),
@@ -142,7 +147,6 @@ class DrawerItem extends StatelessWidget {
         iconColor: iconColor,
         onTap: () {
           controller.selectedDrawerPage = title;
-          Navigator.pop(context);
           GoRouter.of(context).push(location);
         },
         leading: Icon(icon),

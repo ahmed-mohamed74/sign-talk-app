@@ -13,7 +13,7 @@ class MethodItem extends StatelessWidget {
     return Consumer<DataController>(
       builder: (context, controller, _) {
         return Container(
-          width: 100,
+          width: 90,
           height: 30,
           decoration: ShapeDecoration(
             shape: RoundedRectangleBorder(
