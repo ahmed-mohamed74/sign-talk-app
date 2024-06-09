@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:sign_talk_app/controllers/sensor_controller.dart';
 
 import '../../controllers/data_controller.dart';
 import '../../models/mode_model.dart';
@@ -9,7 +10,8 @@ class ApiService {
 
   static Future<void> sendSensorData(
       String receivedString,
-      DataController controller,
+      DataController dataController,
+      SensorController sensorController,
       ) async {
     final url = Uri.parse('$baseUrl/Sensor_Data');
 
@@ -21,7 +23,7 @@ class ApiService {
       "Sensor3_Value": numberStrings[2],
       "Sensor4_Value": numberStrings[3],
       "Sensor5_Value": numberStrings[4],
-      'ModeId':controller.gloveMode+1,
+      'ModeId':dataController.gloveMode+1,
       "UserID": 1,
     });
 
@@ -35,7 +37,7 @@ class ApiService {
       );
 
       if (response.statusCode == 201) {
-        controller.changeGloveDataText(response.body);
+        sensorController.changeGloveDataText(response.body);
         print('Data sent successfully. Response: ${response.body}');
       } else {
         print('Failed to send data. Error: ${response.statusCode} - ${response.body}');
@@ -44,7 +46,7 @@ class ApiService {
       print('Error sending data to API: $e');
     }
   }
-  static Future<dynamic> getModes() async {
+  static Future<List<Mode>?> getModes() async {
     final url = Uri.parse('$baseUrl/modes');
 
     try {
@@ -60,7 +62,11 @@ class ApiService {
 
         final data = jsonDecode(response.body);
         print(data.map((item) => Mode.fromJson(item)).toList());
-        return data.map((item) => Mode.fromJson(item)).toList();
+        List<Mode>? modesList= [];
+        for(int i =0 ; i<data.length;i++){
+          modesList.add(Mode.fromJson(data[i]));
+        }
+        return modesList;
       } else {
         throw Exception('Failed to get modes: ${response.statusCode}');
       }
@@ -71,9 +77,27 @@ class ApiService {
 
   static Future<void> updateMode(Mode mode) async {
     final url = Uri.parse('$baseUrl/modes/${mode.modeId}');
-
-    final body = jsonEncode(mode.toJson());
-
+    print("mode: $mode");
+    final modeData = {
+      "modeId": mode.modeId, // Don't increment the ID here
+      "modeName": mode.modeName,
+      "a": mode.a,
+      "b": mode.b,
+      "c": mode.c,
+      "d": mode.d,
+      "e": mode.e,
+      "f": mode.f,
+      "g": mode.g,
+      "h": mode.h,
+      "i": mode.i,
+      "j": mode.j,
+      "k": mode.k,
+      "l": mode.l,
+      "m": mode.m,
+      "n": mode.n
+    };
+    final body = jsonEncode(modeData);
+    print("body: $body");
     try {
       final response = await http.put(
         url,
@@ -83,10 +107,26 @@ class ApiService {
         body: body,
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 204) {
         print('Mode ${mode.modeId} updated successfully');
       } else {
-        throw Exception('Failed to update mode: ${response.statusCode}');
+        if (response.statusCode == 404) {
+          throw Exception('Mode not found: ${response.statusCode}'); // Specific error for 404
+        } else {
+          try {
+            // Attempt to parse the response body for more details (optional)
+            final decodedResponse = jsonDecode(response.body);
+            final errorMessage = decodedResponse['error']?.toString();
+            if (errorMessage != null) {
+              throw Exception('Failed to update mode: $errorMessage');
+            } else {
+              throw Exception('Failed to update mode: ${response.statusCode}');
+            }
+          } catch (e) {
+            // Handle potential parsing errors
+            throw Exception('Failed to update mode: ${response.statusCode}');
+          }
+        }
       }
     } catch (e) {
       throw Exception('Error updating mode: $e');
@@ -96,7 +136,26 @@ class ApiService {
   static Future<void> createMode(Mode mode) async {
     final url = Uri.parse('$baseUrl/modes');
 
-    final body = jsonEncode(mode.toJson());
+    print("mode: $mode");
+    final modeData = { // Don't increment the ID here
+      "modeName": mode.modeName,
+      "a": mode.a,
+      "b": mode.b,
+      "c": mode.c,
+      "d": mode.d,
+      "e": mode.e,
+      "f": mode.f,
+      "g": mode.g,
+      "h": mode.h,
+      "i": mode.i,
+      "j": mode.j,
+      "k": mode.k,
+      "l": mode.l,
+      "m": mode.m,
+      "n": mode.n
+    };
+    final body = jsonEncode(modeData);
+    print("body: $body");
 
     try {
       final response = await http.post(
@@ -116,4 +175,25 @@ class ApiService {
       throw Exception('Error creating mode: $e');
     }
   }
+  static Future<void> deleteMode(int modeId) async {
+    final url = Uri.parse('$baseUrl/modes/$modeId'); // Use mode ID in the URL
+
+    try {
+      final response = await http.delete(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print('Mode $modeId deleted successfully');
+      } else {
+        throw Exception('Failed to delete mode $modeId : ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error deleting mode: $e');
+    }
+  }
+
 }

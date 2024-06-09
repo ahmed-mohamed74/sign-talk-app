@@ -8,6 +8,7 @@ import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../controllers/data_controller.dart';
 import 'package:provider/provider.dart';
+import '../../controllers/sensor_controller.dart';
 import '../widgets/data-item.dart';
 import '../widgets/method-item-listview.dart';
 
@@ -80,8 +81,8 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DataController>(
-      builder: (context, controller, _) {
+    return Consumer2<DataController,SensorController>(
+      builder: (context, dataController,sensorController, _){
         return Scaffold(
           key: scaffoldKey,
           drawer: const CustomDrawer(),
@@ -129,29 +130,29 @@ class _HomeViewState extends State<HomeView> {
                     FlutterSwitch(
                       width: 70,
                       height: 33,
-                      value: controller.startListenToAPI,
+                      value: dataController.startListenToAPI,
                       padding: 6.0,
                       activeColor: const Color(0xFF4CB6BD),
                       showOnOff: false,
                       onToggle: (value) {
                         setState(() {
-                          controller.startListenToAPI = value;
+                          dataController.startListenToAPI = value;
                         });
                       },
                     ),
                     const SizedBox(
                       width: 5,
                     ),
-                    Text(controller.startListenToAPI
+                    Text(dataController.startListenToAPI
                         ? 'stop listening'
                         : "start listening"),
                   ],
                 ),
               ),
               const Divider(thickness: 1.4),
-              MethodItemListview(controller: controller),
+              MethodItemListview(controller: dataController),
               const Spacer(),
-              controller.startListenToAPI
+              dataController.startListenToAPI
                   ? SizedBox(
                       height: 265,
                       child: Column(
@@ -160,7 +161,7 @@ class _HomeViewState extends State<HomeView> {
                             flutterTts: _flutterTts,
                             upperText: 'Move your hand, please!',
                             color: Theme.of(context).primaryColor,
-                            innerText: controller.gloveText,
+                            innerText: sensorController.gloveText,
                           ),
                           const Spacer(),
                           DataItem(
