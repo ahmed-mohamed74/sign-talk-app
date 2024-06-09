@@ -2,6 +2,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sign_talk_app/controllers/sensor_controller.dart';
 import 'package:sign_talk_app/core/utils/constants.dart';
 import 'package:sign_talk_app/core/utils/AppRouter.dart';
 
@@ -27,25 +28,36 @@ class SignTalkApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => DataController(),
-      child: MaterialApp.router(
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('en', 'US'),
-          Locale('ar', ''),
-        ],
-        locale: DevicePreview.locale(context),
-        builder: DevicePreview.appBuilder,
-        routerConfig: AppRouter.router,
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData.light().copyWith(
-          primaryColor: kPrimaryColor,
-          scaffoldBackgroundColor: Colors.white,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => DataController(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => SensorController(),
+        ),
+      ],
+      child: Builder(
+        builder: (context) {
+          return MaterialApp.router(
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en', 'US'),
+              Locale('ar', ''),
+            ],
+            locale: DevicePreview.locale(context),
+            builder: DevicePreview.appBuilder,
+            routerConfig: AppRouter.router,
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData.light().copyWith(
+              primaryColor: kPrimaryColor,
+              scaffoldBackgroundColor: Colors.white,
+            ),
+          );
+        }
       ),
     );
   }

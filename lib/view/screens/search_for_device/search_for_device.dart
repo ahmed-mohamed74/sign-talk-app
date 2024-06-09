@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:sign_talk_app/controllers/data_controller.dart';
 
+import '../../../controllers/sensor_controller.dart';
 import '../../../core/services/api_service.dart';
 import '../../../core/utils/AppRouter.dart';
 import '../../widgets/curved_container.dart';
@@ -67,14 +68,14 @@ class _SearchForDeviceState extends State<SearchForDevice> {
     }
   }
 
-  Future<void> _connectToDevice(
-      BluetoothDevice device, DataController controller) async {
+  Future<void> _connectToDevice(BluetoothDevice device,
+      DataController dataController, SensorController sensorController) async {
     try {
       connection = await BluetoothConnection.toAddress(device.address);
 
       // Set up listeners for incoming data or connection events
-      _setUpConnectionListeners(
-          controller); // Call _setUpConnectionListeners here
+      _setUpConnectionListeners(dataController,
+          sensorController); // Call _setUpConnectionListeners here
       setState(() {
         bluetoothConnected = 'Connected to ${device.name}';
       });
@@ -84,7 +85,8 @@ class _SearchForDeviceState extends State<SearchForDevice> {
     }
   }
 
-  void _setUpConnectionListeners(DataController controller) {
+  void _setUpConnectionListeners(
+      DataController dataController, SensorController sensorController) {
     if (!isListening) {
       connection!.input!.listen((Uint8List data) {
         // Handle incoming data
@@ -92,8 +94,9 @@ class _SearchForDeviceState extends State<SearchForDevice> {
         print('Received data = $receivedString');
 
         // Send data to API
-        if (controller.startListenToAPI == true) {
-          ApiService.sendSensorData(receivedString, controller);
+        if (dataController.startListenToAPI == true) {
+          ApiService.sendSensorData(
+              receivedString, dataController, sensorController);
         }
       }, onDone: () {
         // Handle connection closed event
@@ -117,14 +120,14 @@ class _SearchForDeviceState extends State<SearchForDevice> {
     print('headers4:${numberStrings[3]}');
     print('headers5:${numberStrings[4]}');
 
-    *//*final headers = {
+    */ /*final headers = {
       'Sensor1_Value': numberStrings[0],
       'Sensor2_Value': numberStrings[1],
       'Sensor3_Value': numberStrings[2],
       'Sensor4_Value': numberStrings[3],
       'Sensor5_Value': numberStrings[4],
       'UserID': '1'
-    };*//*
+    };*/ /*
     final body = jsonEncode({
       "Sensor1_Value": numberStrings[0],
       "Sensor2_Value": numberStrings[1],
@@ -162,8 +165,8 @@ class _SearchForDeviceState extends State<SearchForDevice> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DataController>(
-      builder: (context, controller, _) => Scaffold(
+    return Consumer2<DataController, SensorController>(
+      builder: (context, dataController, sensorController, _) => Scaffold(
         body: Column(
           children: [
             CurvedBottomContainer(press: () {}, icon: Icons.sign_language),
@@ -200,7 +203,8 @@ class _SearchForDeviceState extends State<SearchForDevice> {
                     final device = devices[index];
                     return GestureDetector(
                       onTap: () {
-                        _connectToDevice(device, controller);
+                        _connectToDevice(
+                            device, dataController, sensorController);
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(

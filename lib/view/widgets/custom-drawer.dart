@@ -33,7 +33,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           DrawerItem(
             title: 'Tutorial',
             icon: Icons.history_edu,
-            location: AppRouter.kSearchForDevice,
+            location: AppRouter.kTutorialPage,
           ),
           DrawerItem(
             title: 'Update Words',
@@ -66,7 +66,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           DrawerItem(
             title: 'Dark mode',
             icon: Icons.dark_mode,
-            location: AppRouter.kSearchForDevice,
+            location: AppRouter.kTutorialPage,
             trailingIcon: Icons.toggle_on_sharp,
           ),
           const Divider(),
@@ -85,12 +85,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
           DrawerItem(
             title: 'Help Center',
             icon: Icons.message_outlined,
-            location: AppRouter.kSearchForDevice,
+            location: AppRouter.kHelpCenterPage,
           ),
           DrawerItem(
             title: 'Report A Bug',
             icon: Icons.flag_outlined,
-            location: AppRouter.kSearchForDevice,
+            location: AppRouter.kHelpCenterPage,
           ),
           DrawerItem(
             title: 'Log Out',
