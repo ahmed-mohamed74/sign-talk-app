@@ -23,7 +23,7 @@ class ApiService {
       "Sensor3_Value": numberStrings[2],
       "Sensor4_Value": numberStrings[3],
       "Sensor5_Value": numberStrings[4],
-      'ModeId':dataController.gloveMode+1,
+      'ModeId':dataController.modesList?[dataController.gloveMode].modeId??1,
       "UserID": 1,
     });
 
