@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -13,7 +14,9 @@ import '../widgets/data-item.dart';
 import '../widgets/method-item-listview.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+  HomeView({required this.user, super.key});
+
+  UserCredential? user;
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -81,8 +84,8 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<DataController,SensorController>(
-      builder: (context, dataController,sensorController, _){
+    return Consumer2<DataController, SensorController>(
+      builder: (context, dataController, sensorController, _) {
         return Scaffold(
           key: scaffoldKey,
           drawer: const CustomDrawer(),
@@ -110,10 +113,10 @@ class _HomeViewState extends State<HomeView> {
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
+               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 7.5),
                 child: Text(
-                  'Hi Mohamed,',
+                  'Hi ${widget.user?.user?.displayName??'User'},',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 35,
@@ -151,6 +154,7 @@ class _HomeViewState extends State<HomeView> {
               ),
               const Divider(thickness: 1.4),
               MethodItemListview(controller: dataController),
+              Text(widget.user!.user!.displayName.toString()??'User'),
               const Spacer(),
               dataController.startListenToAPI
                   ? SizedBox(
@@ -206,7 +210,7 @@ class _HomeViewState extends State<HomeView> {
           floatingActionButton: FloatingActionButton(
             tooltip: 'Listen',
             onPressed:
-              _speechToText.isListening ? _stopListening : _startListening,
+                _speechToText.isListening ? _stopListening : _startListening,
             backgroundColor: Theme.of(context).primaryColor,
             child: Icon(
               _speechToText.isNotListening

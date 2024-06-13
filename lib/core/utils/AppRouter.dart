@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sign_talk_app/view/screens/edit_glove_mode/edit_glove_mode.dart';
@@ -39,8 +40,7 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: '/HomeView',
-        builder: (BuildContext context, GoRouterState state) =>
-            const HomeView(),
+        builder: (context, state) => HomeView(user: state.extra as UserCredential?),
       ),
       GoRoute(
         path: kSelectProfile,

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sign_talk_app/view/widgets/custom_button.dart';
@@ -39,7 +40,7 @@ class SignInPage extends StatelessWidget {
               Stack(
                 clipBehavior: Clip.none,
                 children: [
-                   const Positioned(
+                  const Positioned(
                     left: 220,
                     top: -40,
                     //generator circle//===============
@@ -121,10 +122,25 @@ class SignInPage extends StatelessWidget {
                               ),
                               const SizedBox(height: 20.0),
                               GestureDetector(
-                                  onTap: () {
-                                    if (formKey.currentState!.validate()) {
+                                  onTap: () async {
+                                    try {
+                                      UserCredential user = await FirebaseAuth
+                                          .instance
+                                          .signInWithEmailAndPassword(
+                                        email: emailController.text.trim(),
+                                        password:
+                                            passwordController.text.trim(),
+                                      );
+                                      print(user.user!.email);
+                                      print(user.user!.displayName);
                                       GoRouter.of(context)
-                                          .push(AppRouter.kHomeView);
+                                          .push(AppRouter.kHomeView,extra: user);
+                                    } on FirebaseAuthException catch (e) {
+                                      if (e.code == 'user-not-found') {
+                                        print('No user found for that email.');
+                                      } else if (e.code == 'wrong-password') {
+                                        print('Wrong password provided for that user.');
+                                      }
                                     }
                                   },
                                   child: CustomButton(text: 'Sign In')),

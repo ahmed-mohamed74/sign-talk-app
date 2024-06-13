@@ -303,7 +303,8 @@ class _SearchForDeviceState extends State<SearchForDevice> {
                           borderRadius: BorderRadius.circular(10))),
                     ),
                     onPressed: () {
-                      GoRouter.of(context).push(AppRouter.kHomeView);
+                      GoRouter.of(context).push(AppRouter.kSignInPage);
+                      //GoRouter.of(context).push(AppRouter.kHomeView);
                     },
                     child: const Text('Next'),
                   ),

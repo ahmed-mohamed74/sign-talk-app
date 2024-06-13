@@ -13,9 +13,6 @@ import '../../widgets/generator-circle.dart';
 class SignUpPage extends StatelessWidget {
   SignUpPage({super.key});
 
-  String? email;
-  String? password;
-
   @override
   Widget build(BuildContext context) {
     final emailController = TextEditingController();
@@ -93,6 +90,9 @@ class SignUpPage extends StatelessWidget {
                               const SizedBox(height: 20.0),
                               TextFormField(
                                 controller: nameController,
+                                onChanged: (data) {
+                                  nameController.text = data;
+                                },
                                 validator: (val) => val!.isEmpty
                                     ? 'Please Enter Your Name !'
                                     : null,
@@ -103,7 +103,7 @@ class SignUpPage extends StatelessWidget {
                               const SizedBox(height: 10.0),
                               TextFormField(
                                 onChanged: (data) {
-                                  email = data;
+                                  emailController.text = data;
                                 },
                                 controller: emailController,
                                 validator: (val) => val!.isEmpty
@@ -116,7 +116,7 @@ class SignUpPage extends StatelessWidget {
                               const SizedBox(height: 10.0),
                               TextFormField(
                                 onChanged: (data) {
-                                  password = data;
+                                  passwordController.text = data;
                                 },
                                 controller: passwordController,
                                 validator: (val) => val!.isEmpty
@@ -169,18 +169,22 @@ class SignUpPage extends StatelessWidget {
                                       UserCredential user = await FirebaseAuth
                                           .instance
                                           .createUserWithEmailAndPassword(
-                                              email: email!,
-                                              password: password!);
-                                      GoRouter.of(context)
-                                          .push(AppRouter.kHomeView);
+                                              email: emailController.text.trim(),
+                                              password: passwordController.text.trim());
+                                      await user.user!.updateDisplayName(
+                                          nameController.text.trim());
+                                      print(nameController.text.trim());
+                                      print(user.user?.displayName??'user');
+                                      await GoRouter.of(context).push(
+                                          AppRouter.kHomeView,
+                                          extra: user);
                                     } on FirebaseAuthException catch (ex) {
                                       if (ex.code == 'weak-password') {
                                         print('weak-password');
                                       } else if (ex.code ==
                                           'email-already-in-use') {
                                         print('email-already-in-use');
-                                      }
-                                      else{
+                                      } else {
                                         print('error');
                                       }
                                     }
