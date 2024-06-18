@@ -10,8 +10,8 @@ import '../../view/screens/drawer_pages/help_center.dart';
 import '../../view/screens/drawer_pages/tutorial_page_body.dart';
 import '../../view/screens/login_register/sign_in.dart';
 import '../../view/screens/login_register/sign_up.dart';
-import '../../view/widgets/choose-language.dart';
-import '../../view/widgets/select-profile.dart';
+import '../../view/screens/drawer_pages/choose-language.dart';
+import '../../view/screens/drawer_pages/select-profile.dart';
 
 abstract class AppRouter {
   static const kSignUpPage = '/SignUpPage';
@@ -42,11 +42,11 @@ abstract class AppRouter {
         path: '/HomeView',
         builder: (context, state) => HomeView(user: state.extra as UserCredential?),
       ),
-      GoRoute(
+      /*GoRoute(
         path: kSelectProfile,
-        builder: (BuildContext context, GoRouterState state) =>
-            const SelectProfile(),
-      ),
+        builder: (context, state) =>
+            SelectProfile(user: state.extra as UserCredential?),
+      ),*/
       GoRoute(
         path: kSearchForDevice,
         builder: (BuildContext context, GoRouterState state) =>

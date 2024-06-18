@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'curved_container.dart';
+import '../../widgets/curved_container.dart';
 
 class ChooseLanguage extends StatelessWidget {
   const ChooseLanguage({super.key});

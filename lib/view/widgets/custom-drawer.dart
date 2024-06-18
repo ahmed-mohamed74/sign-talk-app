@@ -26,11 +26,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
             location: AppRouter.kHomeView,
           ),
           DrawerItem(
-            title: 'My Profile',
-            icon: Icons.perm_identity,
-            location: AppRouter.kSelectProfile,
-          ),
-          DrawerItem(
             title: 'Tutorial',
             icon: Icons.history_edu,
             location: AppRouter.kTutorialPage,
