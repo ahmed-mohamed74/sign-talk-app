@@ -67,18 +67,6 @@ class SignUpPage extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.all(20.0),
                           width: 300,
-                          /* decoration: ShapeDecoration(
-                            gradient: const LinearGradient(
-                              begin: Alignment(0.85, -0.76),
-                              end: Alignment(-0.85, 0.76),
-                              colors: [Color(0x66E7E7E7), Color(0x4C8DC9CD)],
-                            ),
-                            shape: RoundedRectangleBorder(
-                              side:
-                                  const BorderSide(width: 1, color: Colors.white),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),*/
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,6 +161,11 @@ class SignUpPage extends StatelessWidget {
                                               password: passwordController.text.trim());
                                       await user.user!.updateDisplayName(
                                           nameController.text.trim());
+                                      user = await FirebaseAuth
+                                          .instance
+                                          .signInWithEmailAndPassword(
+                                          email: emailController.text.trim(),
+                                          password: passwordController.text.trim());
                                       print(nameController.text.trim());
                                       print(user.user?.displayName??'user');
                                       await GoRouter.of(context).push(

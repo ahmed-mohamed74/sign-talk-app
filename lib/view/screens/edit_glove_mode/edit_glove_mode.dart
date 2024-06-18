@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_talk_app/core/services/api_service.dart';
+import 'package:sign_talk_app/core/utils/AppRouter.dart';
 import 'package:sign_talk_app/models/mode_model.dart';
 
 import '../../../controllers/data_controller.dart';
@@ -175,8 +177,9 @@ class _EditGloveModePageState extends State<EditGloveModePage> {
                                 context,
                                 controller
                                     .modesList![controller.gloveMode].modeId!,
-                                controller.modesList![controller.gloveMode]
-                                    .modeName!,controller);
+                                controller
+                                    .modesList![controller.gloveMode].modeName!,
+                                controller);
                           } catch (error) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Error: $error')),
@@ -200,7 +203,8 @@ class _EditGloveModePageState extends State<EditGloveModePage> {
   }
 }
 
-void _showDeleteModeDialog(BuildContext context, int modeId, String modeName,DataController controller) {
+void _showDeleteModeDialog(BuildContext context, int modeId, String modeName,
+    DataController controller) {
   final TextEditingController modeNameController = TextEditingController();
   showDialog(
     context: context,
@@ -231,15 +235,10 @@ void _showDeleteModeDialog(BuildContext context, int modeId, String modeName,Dat
                 controller.changeGloveMode(0);
                 _deleteMode(modeId, context); // Call deleteMode function
                 Navigator.pop(context); // Go back to previous screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const EditGloveModePage()),
-                );
+                GoRouter.of(context).push(AppRouter.kEditWords);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Mode $modeId deleted successfully')),
                 );
-
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(

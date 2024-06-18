@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sign_talk_app/view/screens/drawer_pages/select-profile.dart';
 import 'package:sign_talk_app/view/widgets/custom-drawer.dart';
 import 'package:sign_talk_app/core/utils/assets.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -10,6 +12,7 @@ import 'package:speech_to_text/speech_to_text.dart';
 import '../../controllers/data_controller.dart';
 import 'package:provider/provider.dart';
 import '../../controllers/sensor_controller.dart';
+import '../../core/utils/AppRouter.dart';
 import '../widgets/data-item.dart';
 import '../widgets/method-item-listview.dart';
 
@@ -97,13 +100,27 @@ class _HomeViewState extends State<HomeView> {
                 child: Image.asset(
                   AssetsData.slider,
                 )),
-            actions: const [
+            actions: [
               Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.sign_language,
-                  size: 40,
-                  color: Colors.black87,
+                padding: const EdgeInsets.all(8.0),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.person_outline_outlined,
+                    size: 40,
+                    color: Colors.black87,
+                  ),
+                  onPressed: () {
+                    print(widget.user?.user?.email ?? 'no email');
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SelectProfile(
+                              userEmail:
+                                  widget.user?.user?.email ?? 'emal@email',
+                              userName:
+                                  widget.user?.user?.displayName ?? 'name', userId: widget.user?.user?.uid??'Not Found',),
+                        ));
+                  },
                 ),
               ),
             ],
@@ -113,11 +130,11 @@ class _HomeViewState extends State<HomeView> {
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 7.5),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 7.5),
                 child: Text(
-                  'Hi ${widget.user?.user?.displayName??'User'},',
-                  style: TextStyle(
+                  'Hi ${widget.user?.user?.displayName ?? 'User'},',
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 35,
                     fontFamily: 'Lato',
@@ -154,7 +171,6 @@ class _HomeViewState extends State<HomeView> {
               ),
               const Divider(thickness: 1.4),
               MethodItemListview(controller: dataController),
-              Text(widget.user!.user!.displayName.toString()??'User'),
               const Spacer(),
               dataController.startListenToAPI
                   ? SizedBox(

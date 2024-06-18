@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 
-import 'curved_container.dart';
+import '../../widgets/curved_container.dart';
 
 class SelectProfile extends StatelessWidget {
-  const SelectProfile({super.key});
+  const SelectProfile(
+      {super.key,
+      required this.userName,
+      required this.userEmail,
+      required this.userId});
+
+  final String userName;
+  final String userEmail;
+  final String userId;
 
   @override
   Widget build(BuildContext context) {
@@ -29,30 +37,31 @@ class SelectProfile extends StatelessWidget {
         const SizedBox(
           height: 5,
         ),
-        const Text(
-          'shadan khalid',
-          style: TextStyle(color: Colors.grey),
+        Text(
+          userName,
+          style: const TextStyle(color: Colors.grey),
         ),
         const SizedBox(
           height: 5,
         ),
-        const Padding(
+        Padding(
           padding: EdgeInsets.only(top: 20, left: 20, right: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ListItem(
-                  text: 'E-mail',
-                  icon: Icons.email_rounded,
-                  mail: 'Shadan_Khalid18@gmail.com'),
+                  text: 'E-mail', icon: Icons.email_rounded, mail: userEmail),
               SizedBox(
                 height: 10,
               ),
-              ListItem(text: 'Phone', icon: Icons.phone, mail: '01018517555'),
+              ListItem(text: 'Phone', icon: Icons.phone, mail: '01012345678'),
               SizedBox(
                 height: 10,
               ),
-              ListItem(text: 'Password', icon: Icons.lock, mail: 'om12***09yu'),
+              ListItem(
+                  text: 'User ID',
+                  icon: Icons.verified_user_outlined,
+                  mail: userId),
             ],
           ),
         )
@@ -94,12 +103,14 @@ class ListItem extends StatelessWidget {
               children: [
                 // SizedBox(width: 10,),
                 Icon(icon),
-                const SizedBox(
-                  width: 40,
-                ),
-                Text(
-                  mail,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                const SizedBox(width: 40),
+                Expanded(
+                  flex: 5,
+                  child: Text(
+                    mail,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2, // Limit to one line if desired
+                  ),
                 ),
                 const Spacer(),
                 const Icon(Icons.settings),
