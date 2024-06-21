@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:sign_talk_app/core/utils/constants.dart';
 
 class DataItem extends StatelessWidget {
-   const DataItem({
+  const DataItem({
     super.key,
     required this.innerText,
     required this.upperText,
-    required this.color, required this.flutterTts,
+    required this.color,
+    required this.flutterTts,
   });
 
   final String innerText;
@@ -24,8 +26,9 @@ class DataItem extends StatelessWidget {
             children: [
               Text(
                 translate(upperText),
-                style: const TextStyle(
-                  color: Colors.black,
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.titleLarge?.color ??
+                      kPrimaryColor,
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                 ),
@@ -37,12 +40,14 @@ class DataItem extends StatelessWidget {
                   await flutterTts.speak(translate(innerText));
                 },
                 icon: const Icon(Icons.volume_up),
-                color: Colors.black54,
+                color: Theme.of(context).textTheme.titleLarge?.color ??
+                    kPrimaryColor,
               ),
               PopupMenuButton<String>(
-                icon: const Icon(
+                icon: Icon(
                   Icons.settings,
-                  color: Colors.black54,
+                  color: Theme.of(context).textTheme.titleLarge?.color ??
+                      kPrimaryColor,
                 ),
                 onSelected: (String value) {
                   if (value == 'English') {
@@ -64,15 +69,13 @@ class DataItem extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(
-            height: 5,
-          ),
+          const SizedBox(height: 5),
           Center(
             child: Container(
               width: double.infinity,
               height: 55,
               decoration: ShapeDecoration(
-                color: const Color(0xFFF6F6F6),
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
                   side: BorderSide(width: 1, color: color),
                   borderRadius: BorderRadius.circular(10),

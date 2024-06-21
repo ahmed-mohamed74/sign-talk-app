@@ -10,56 +10,64 @@ class TutorialPage extends StatefulWidget {
 }
 
 class _TutorialPageState extends State<TutorialPage> {
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
   int _currentPage = 0;
 
   final List<String> tutorialTexts = [
-    "Here, you'll learn the basics of sign language.",
-    "This Gesture represent : ",
-    "This Gesture represent : ",
-    "This Gesture represent : ",
-    "This Gesture represent : ",
-    "This Gesture represent : ",
-    "This Gesture represent : ",
-    "This Gesture represent : ",
-    "This Gesture represent : ",
-    "This Gesture represent : ",
-    "This Gesture represent : ",
-    "This Gesture represent : ",
-    "This Gesture represent : ",
+    "Here, you'll learn our sign talk app moves.",
+    "This Gesture represents : ",
+    "This Gesture represents : ",
+    "This Gesture represents : ",
+    "This Gesture represents : ",
+    "This Gesture represents : ",
+    "This Gesture represents : ",
+    "This Gesture represents : ",
+    "This Gesture represents : ",
+    "This Gesture represents : ",
+    "This Gesture represents : ",
+    "This Gesture represents : ",
+    "This Gesture represents : ",
+    "This Gesture represents : ",
+    "This Gesture represents : ",
+    "This Gesture represents : ",
   ];
 
   final List<String> tutorialImages = [
-    "assets/images/sign-talk.png",
-    "assets/images/sign-talk.png",
-    "assets/images/sign-talk.png",
-    "assets/images/sign-talk.png",
-    "assets/images/sign-talk.png",
-    "assets/images/sign-talk.png",
-    "assets/images/sign-talk.png",
-    "assets/images/sign-talk.png",
-    "assets/images/sign-talk.png",
-    "assets/images/sign-talk.png",
-    "assets/images/sign-talk.png",
-    "assets/images/sign-talk.png",
-    "assets/images/sign-talk.png",
-
+    "assets/tutorial/0.png",
+    "assets/tutorial/1.png",
+    "assets/tutorial/2.png",
+    "assets/tutorial/3.png",
+    "assets/tutorial/4.png",
+    "assets/tutorial/5.png",
+    "assets/tutorial/6.png",
+    "assets/tutorial/7.png",
+    "assets/tutorial/8.png",
+    "assets/tutorial/9.png",
+    "assets/tutorial/10.png",
+    "assets/tutorial/11.png",
+    "assets/tutorial/12.png",
+    "assets/tutorial/13.png",
+    "assets/tutorial/14.png",
+    "assets/tutorial/15.png",
   ];
 
   final List<String> tutorialGuideTexts = [
     "Swipe left to see more tutorial pages.",
-    " I Need Water ",
-    " I Need Water ",
-    " I Need Water ",
-    " I Need Water ",
-    " I Need Water ",
-    " I Need Water ",
-    " I Need Water ",
-    " I Need Water ",
-    " I Need Water ",
-    " I Need Water ",
-    " I Need Water ",
-    " I Need Water ",
+    " Move 1 ",
+    " Move 2 ",
+    " Move 3 ",
+    " Move 4 ",
+    " Move 5 ",
+    " Move 6 ",
+    " Move 7 ",
+    " Move 8 ",
+    " Move 9 ",
+    " Move 10 ",
+    " Move 11 ",
+    " Move 12 ",
+    " Move 13 ",
+    " Move 14 ",
+    " Move 15 ",
 
 
   ];
@@ -67,10 +75,6 @@ class _TutorialPageState extends State<TutorialPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-        title: const Text("Welcome to our sign language app",style: TextStyle(color: Color(0xff39a6b0)),),
-        centerTitle: true,
-      ),*/
       body: Column(
         children: [
           CurvedBottomContainer(
@@ -97,7 +101,7 @@ class _TutorialPageState extends State<TutorialPage> {
           const SizedBox(height: 20),
           Text(
             "Page ${_currentPage + 1} of ${tutorialTexts.length}",
-            style: const TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: 16,color: Theme.of(context).textTheme.titleLarge!.color),
           ),
           const SizedBox(height: 20),
         ],
@@ -123,10 +127,13 @@ class TutorialPageItem extends StatelessWidget {
           height: 200, // Adjust as needed
         ),
         const SizedBox(height: 20),
-        Text(
-          text,
-          style: const TextStyle(fontSize: 18),
-          textAlign: TextAlign.center,
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            text,
+            style: TextStyle(fontSize: 18,color: Theme.of(context).textTheme.titleLarge!.color),
+            textAlign: TextAlign.center,
+          ),
         ),
         const SizedBox(height: 10),
         Text(

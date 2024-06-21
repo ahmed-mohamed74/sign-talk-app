@@ -239,7 +239,9 @@ class _SearchForDeviceState extends State<SearchForDevice> {
                                     ),
                                     Text(
                                       device.address,
-                                      style: const TextStyle(fontSize: 12),
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.black),
                                     )
                                   ],
                                 ),

@@ -11,6 +11,8 @@ import 'firebase_options.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'controllers/theme_provider.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -20,11 +22,16 @@ void main() async {
     fallbackLocale: 'en_US',
     supportedLocales: ['en_US', 'ar'],
   );
-  runApp(LocalizedApp(delegate, const SignTalkApp()));
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: LocalizedApp(delegate, SignTalkApp()),
+    ),
+  );
 }
 
 class SignTalkApp extends StatelessWidget {
-  const SignTalkApp({super.key});
+  SignTalkApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +44,9 @@ class SignTalkApp extends StatelessWidget {
           create: (context) => SensorController(),
         ),
       ],
-      child: Builder(
-        builder: (context) {
-          return MaterialApp.router(
+      child: Builder(builder: (context) {
+        return Consumer<ThemeProvider>(
+          builder:(context, themeProvider, child) => MaterialApp.router(
             localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
@@ -52,13 +59,12 @@ class SignTalkApp extends StatelessWidget {
             builder: DevicePreview.appBuilder,
             routerConfig: AppRouter.router,
             debugShowCheckedModeBanner: false,
-            theme: ThemeData.light().copyWith(
-              primaryColor: kPrimaryColor,
-              scaffoldBackgroundColor: Colors.white,
-            ),
-          );
-        }
-      ),
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            themeMode: themeProvider.themeMode,
+          ),
+        );
+      }),
     );
   }
 }

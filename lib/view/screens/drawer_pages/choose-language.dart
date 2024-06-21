@@ -30,15 +30,16 @@ class ChooseLanguage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FlagItem(
-                  image: 'assets/images/flag-for-flag-egypt-svgrepo-com 1.png',
-                  text: 'English'),
+                image: 'assets/images/flag-for-flag-egypt-svgrepo-com 1.png',
+                text: 'Arabic',
+              ),
               SizedBox(
                 width: 80,
               ),
               FlagItem(
                   image:
                       'assets/images/flag-for-flag-united-kingdom-svgrepo-com 1.png',
-                  text: 'Arabic'),
+                  text: 'English'),
             ],
           ),
         ],
@@ -61,7 +62,11 @@ class FlagItem extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        Text(text),
+        Text(
+          text,
+          style:
+              TextStyle(color: Theme.of(context).textTheme.titleLarge!.color),
+        ),
       ],
     );
   }

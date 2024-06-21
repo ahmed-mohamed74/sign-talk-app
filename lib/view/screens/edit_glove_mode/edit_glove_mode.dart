@@ -76,12 +76,20 @@ class _EditGloveModePageState extends State<EditGloveModePage> {
                                 words.length
                                     .clamp(0, 14), // Limit to 13 elements
                                 (index) => ListTile(
-                                  leading: Text('${index + 1}'),
+                                  leading: Text(
+                                    '${index + 1}',
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge!
+                                            .color),
+                                  ),
                                   title: TextFormField(
                                     controller:
                                         controller.getFieldController(index)
                                           ..text =
                                               words[index], // Set initial value
+                                    style: TextStyle(color: Theme.of(context).textTheme.titleLarge!.color),
                                   ),
                                 ),
                               ),

@@ -45,19 +45,16 @@ class SelectProfile extends StatelessWidget {
           height: 5,
         ),
         Padding(
-          padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+          padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ListItem(
                   text: 'E-mail', icon: Icons.email_rounded, mail: userEmail),
-              SizedBox(
-                height: 10,
-              ),
-              ListItem(text: 'Phone', icon: Icons.phone, mail: '01012345678'),
-              SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
+              const ListItem(
+                  text: 'Phone', icon: Icons.phone, mail: '01012345678'),
+              const SizedBox(height: 10),
               ListItem(
                   text: 'User ID',
                   icon: Icons.verified_user_outlined,
@@ -85,11 +82,8 @@ class ListItem extends StatelessWidget {
       children: [
         Text(
           text,
-          style: const TextStyle(color: Colors.black),
         ),
-        const SizedBox(
-          height: 4,
-        ),
+        const SizedBox(height: 4),
         Container(
           width: double.infinity,
           height: 50,
@@ -102,7 +96,10 @@ class ListItem extends StatelessWidget {
             child: Row(
               children: [
                 // SizedBox(width: 10,),
-                Icon(icon),
+                Icon(
+                  icon,
+                  color: Colors.black,
+                ),
                 const SizedBox(width: 40),
                 Expanded(
                   flex: 5,
@@ -110,10 +107,16 @@ class ListItem extends StatelessWidget {
                     mail,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2, // Limit to one line if desired
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
                   ),
                 ),
                 const Spacer(),
-                const Icon(Icons.settings),
+                const Icon(
+                  Icons.settings,
+                  color: Colors.black,
+                ),
                 // SizedBox(width: 10,),
               ],
             ),
