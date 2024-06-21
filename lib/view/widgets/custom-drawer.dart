@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:sign_talk_app/controllers/data_controller.dart';
 
 import 'package:sign_talk_app/core/utils/AppRouter.dart';
-import 'package:sign_talk_app/models/drawer_item_model.dart';
+
+import '../../core/utils/constants.dart';
+import '../../controllers/theme_provider.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
@@ -16,24 +20,29 @@ class CustomDrawer extends StatefulWidget {
 class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeProvider>(context);
     return Drawer(
       child: ListView(
         children: [
           const DrawerHeader(child: Icon(Icons.sign_language, size: 50)),
           DrawerItem(
-            title: 'Home',
-            icon: Icons.home,
-            location: AppRouter.kHomeView,
-          ),
+              title: 'Home',
+              textColor: Theme.of(context).textTheme.titleLarge!.color,
+              iconColor: Theme.of(context).textTheme.titleLarge!.color,
+              icon: Icons.home),
           DrawerItem(
             title: 'Tutorial',
             icon: Icons.history_edu,
             location: AppRouter.kTutorialPage,
+            textColor: Theme.of(context).textTheme.titleLarge!.color,
+            iconColor: Theme.of(context).textTheme.titleLarge!.color,
           ),
           DrawerItem(
             title: 'Update Words',
             icon: Icons.edit,
             location: AppRouter.kEditWords,
+            textColor: Theme.of(context).textTheme.titleLarge!.color,
+            iconColor: Theme.of(context).textTheme.titleLarge!.color,
           ),
           const Divider(),
           const Padding(
@@ -57,12 +66,48 @@ class _CustomDrawerState extends State<CustomDrawer> {
             title: 'Language',
             icon: Icons.translate_outlined,
             location: AppRouter.kChooseLanguage,
+            textColor: Theme.of(context).textTheme.titleLarge!.color,
+            iconColor: Theme.of(context).textTheme.titleLarge!.color,
           ),
-          DrawerItem(
-            title: 'Dark mode',
-            icon: Icons.dark_mode,
-            location: AppRouter.kTutorialPage,
-            trailingIcon: Icons.toggle_on_sharp,
+          Container(
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadiusDirectional.only(
+                  bottomEnd: Radius.circular(30),
+                  topEnd: Radius.circular(30),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.transparent,
+                    spreadRadius: 1,
+                  ),
+                ]),
+            child: ListTile(
+              enabled: false,
+              //iconColor: Colors.black,
+              onTap: () {},
+              leading: Icon(
+                Icons.dark_mode,
+                color: Theme.of(context).textTheme.titleLarge!.color,
+              ),
+              trailing: SizedBox(
+                width: 45,
+                height: 25,
+                child: FlutterSwitch(
+                  value: themeProvider.isDarkMode,
+                  //padding: 6.0,
+                  activeColor: kPrimaryColor,
+                  showOnOff: false,
+                  onToggle: (value) {
+                    themeProvider.toggleTheme(value);
+                  },
+                ),
+              ),
+              title: Text(
+                'Dark mode',
+                style: TextStyle(
+                    color: Theme.of(context).textTheme.titleLarge!.color),
+              ),
+            ),
           ),
           const Divider(),
           const Padding(
@@ -81,11 +126,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
             title: 'Help Center',
             icon: Icons.message_outlined,
             location: AppRouter.kHelpCenterPage,
+            textColor: Theme.of(context).textTheme.titleLarge!.color,
+            iconColor: Theme.of(context).textTheme.titleLarge!.color,
           ),
           DrawerItem(
             title: 'Report A Bug',
             icon: Icons.flag_outlined,
-            location: AppRouter.kHelpCenterPage,
+            location: AppRouter.kBugReportPage,
+            textColor: Theme.of(context).textTheme.titleLarge!.color,
+            iconColor: Theme.of(context).textTheme.titleLarge!.color,
           ),
           DrawerItem(
             title: 'Log Out',
@@ -105,7 +154,7 @@ class DrawerItem extends StatelessWidget {
     super.key,
     required this.title,
     required this.icon,
-    required this.location,
+    this.location,
     this.iconColor,
     this.textColor,
     this.trailingIcon,
@@ -113,7 +162,7 @@ class DrawerItem extends StatelessWidget {
 
   final String title;
   final IconData icon;
-  final String location;
+  String? location;
   bool isSelected = false;
   Color? iconColor = Colors.black;
   Color? textColor = Colors.black;
@@ -133,7 +182,7 @@ class DrawerItem extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: isSelected
-                  ? const Color(0xFF4CB6BD).withOpacity(0.5)
+                  ? kPrimaryColor.withOpacity(0.5)
                   : Colors.transparent,
               spreadRadius: 1,
             ),
@@ -142,7 +191,9 @@ class DrawerItem extends StatelessWidget {
         iconColor: iconColor,
         onTap: () {
           controller.selectedDrawerPage = title;
-          GoRouter.of(context).push(location);
+          location != null
+              ? GoRouter.of(context).push(location!)
+              : GoRouter.of(context).pop();
         },
         leading: Icon(icon),
         trailing: trailingIcon != null ? Icon(trailingIcon) : null,

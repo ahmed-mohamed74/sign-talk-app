@@ -20,7 +20,6 @@ class SignUpPage extends StatelessWidget {
     final passwordController = TextEditingController();
     final formKey = GlobalKey<FormState>();
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Form(
         key: formKey,
         child: SingleChildScrollView(
@@ -71,9 +70,13 @@ class SignUpPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 'Sign Up',
-                                style: Styles.style30,
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontFamily: 'Lato',
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                               const SizedBox(height: 20.0),
                               TextFormField(
@@ -153,32 +156,64 @@ class SignUpPage extends StatelessWidget {
                               const SizedBox(height: 20.0),
                               CustomButton(
                                   onTap: () async {
-                                    try {
-                                      UserCredential user = await FirebaseAuth
-                                          .instance
-                                          .createUserWithEmailAndPassword(
-                                              email: emailController.text.trim(),
-                                              password: passwordController.text.trim());
-                                      await user.user!.updateDisplayName(
-                                          nameController.text.trim());
-                                      user = await FirebaseAuth
-                                          .instance
-                                          .signInWithEmailAndPassword(
+                                    if (formKey.currentState!.validate() &&
+                                        formKey.currentState!.validate()) {
+                                      try {
+                                        UserCredential user = await FirebaseAuth
+                                            .instance
+                                            .createUserWithEmailAndPassword(
                                           email: emailController.text.trim(),
-                                          password: passwordController.text.trim());
-                                      print(nameController.text.trim());
-                                      print(user.user?.displayName??'user');
-                                      await GoRouter.of(context).push(
+                                          password:
+                                              passwordController.text.trim(),
+                                        );
+                                        await user.user!.updateDisplayName(
+                                          nameController.text.trim(),
+                                        );
+
+                                        user = await FirebaseAuth.instance
+                                            .signInWithEmailAndPassword(
+                                          email: emailController.text.trim(),
+                                          password:
+                                              passwordController.text.trim(),
+                                        );
+
+                                        print(nameController.text.trim());
+                                        print(user.user?.displayName ?? 'user');
+
+                                        GoRouter.of(context).pushReplacement(
                                           AppRouter.kHomeView,
-                                          extra: user);
-                                    } on FirebaseAuthException catch (ex) {
-                                      if (ex.code == 'weak-password') {
-                                        print('weak-password');
-                                      } else if (ex.code ==
-                                          'email-already-in-use') {
-                                        print('email-already-in-use');
-                                      } else {
-                                        print('error');
+                                          extra: user,
+                                        );
+                                      } on FirebaseAuthException catch (ex) {
+                                        String message;
+                                        switch (ex.code) {
+                                          case 'weak-password':
+                                            message =
+                                                'The password is too weak. Please choose a stronger password.';
+                                            break;
+                                          case 'email-already-in-use':
+                                            message =
+                                                'The email address is already in use by another account.';
+                                            break;
+                                          case 'invalid-email':
+                                            message =
+                                                'Please enter a valid email address.';
+                                            break;
+                                          case 'operation-not-allowed':
+                                            message =
+                                                'Email/password sign-in is disabled.';
+                                            break;
+                                          default:
+                                            message =
+                                                'An error occurred during sign up: ${ex.message}';
+                                        }
+
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(message),
+                                          ),
+                                        );
                                       }
                                     }
                                   },
@@ -198,8 +233,8 @@ class SignUpPage extends StatelessWidget {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      GoRouter.of(context)
-                                          .push(AppRouter.kSignInPage);
+                                      GoRouter.of(context).pushReplacement(
+                                          AppRouter.kSignInPage);
                                     },
                                     child: Text(
                                       'Sign In',

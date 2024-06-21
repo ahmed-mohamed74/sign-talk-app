@@ -21,7 +21,6 @@ class SignInPage extends StatelessWidget {
     final passwordController = TextEditingController();
     final formKey = GlobalKey<FormState>();
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Form(
         key: formKey,
         child: SingleChildScrollView(
@@ -84,9 +83,13 @@ class SignInPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 'Sign In',
-                                style: Styles.style30,
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontFamily: 'Lato',
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                               const SizedBox(height: 20.0),
                               TextFormField(
@@ -94,9 +97,16 @@ class SignInPage extends StatelessWidget {
                                   email = data;
                                 },
                                 controller: emailController,
-                                validator: (val) => val!.isEmpty
-                                    ? 'Please Enter Your Email !'
-                                    : null,
+                                validator: (val) {
+                                  if (val!.isEmpty) {
+                                    return 'Please Enter Your Email !';
+                                  } else if (!RegExp(
+                                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z]+$")
+                                      .hasMatch(val)) {
+                                    return 'Please Enter a Valid Email Address!'; // Improved email validation
+                                  }
+                                  return null;
+                                },
                                 decoration: const InputDecoration(
                                   labelText: 'E-mail or Mobile Number',
                                 ),
@@ -113,6 +123,8 @@ class SignInPage extends StatelessWidget {
                                 obscureText: true,
                                 decoration: const InputDecoration(
                                   labelText: 'Password',
+                                  // Add an error style to show the error message below the field
+                                  errorStyle: TextStyle(color: Colors.red),
                                 ),
                               ),
                               const SizedBox(height: 22.0),
@@ -123,23 +135,43 @@ class SignInPage extends StatelessWidget {
                               const SizedBox(height: 20.0),
                               GestureDetector(
                                   onTap: () async {
-                                    try {
-                                      UserCredential user = await FirebaseAuth
-                                          .instance
-                                          .signInWithEmailAndPassword(
-                                        email: emailController.text.trim(),
-                                        password:
-                                            passwordController.text.trim(),
-                                      );
-                                      print(user.user!.email);
-                                      print(user.user!.displayName);
-                                      GoRouter.of(context)
-                                          .push(AppRouter.kHomeView,extra: user);
-                                    } on FirebaseAuthException catch (e) {
-                                      if (e.code == 'user-not-found') {
-                                        print('No user found for that email.');
-                                      } else if (e.code == 'wrong-password') {
-                                        print('Wrong password provided for that user.');
+                                    if (formKey.currentState!.validate()) {
+                                      try {
+                                        UserCredential user = await FirebaseAuth
+                                            .instance
+                                            .signInWithEmailAndPassword(
+                                          email: emailController.text.trim(),
+                                          password:
+                                              passwordController.text.trim(),
+                                        );
+                                        print(user.user!.email);
+                                        print(user.user!.displayName);
+                                        GoRouter.of(context).pushReplacement(
+                                            AppRouter.kHomeView,
+                                            extra: user);
+                                      } on FirebaseAuthException catch (e) {
+                                        if (e.code == 'user-not-found') {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    'Email not found. Please try again.')),
+                                          );
+                                        } else if (e.code == 'wrong-password') {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    'Wrong password. Please try again.')),
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                                content: Text(
+                                                    'Sign in failed: ${e.message}')),
+                                          );
+                                        }
                                       }
                                     }
                                   },
@@ -159,8 +191,8 @@ class SignInPage extends StatelessWidget {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      GoRouter.of(context)
-                                          .push(AppRouter.kSignUpPage);
+                                      GoRouter.of(context).pushReplacement(
+                                          AppRouter.kSignUpPage);
                                     },
                                     child: Text(
                                       'Sign Up',

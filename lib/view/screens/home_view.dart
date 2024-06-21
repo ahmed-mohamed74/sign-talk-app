@@ -13,6 +13,7 @@ import '../../controllers/data_controller.dart';
 import 'package:provider/provider.dart';
 import '../../controllers/sensor_controller.dart';
 import '../../core/utils/AppRouter.dart';
+import '../../core/utils/constants.dart';
 import '../widgets/data-item.dart';
 import '../widgets/method-item-listview.dart';
 
@@ -99,6 +100,7 @@ class _HomeViewState extends State<HomeView> {
                 },
                 child: Image.asset(
                   AssetsData.slider,
+                  color: Theme.of(context).appBarTheme.foregroundColor,
                 )),
             actions: [
               Padding(
@@ -107,7 +109,6 @@ class _HomeViewState extends State<HomeView> {
                   icon: const Icon(
                     Icons.person_outline_outlined,
                     size: 40,
-                    color: Colors.black87,
                   ),
                   onPressed: () {
                     print(widget.user?.user?.email ?? 'no email');
@@ -115,113 +116,123 @@ class _HomeViewState extends State<HomeView> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => SelectProfile(
-                              userEmail:
-                                  widget.user?.user?.email ?? 'emal@email',
-                              userName:
-                                  widget.user?.user?.displayName ?? 'name', userId: widget.user?.user?.uid??'Not Found',),
+                            userEmail: widget.user?.user?.email ?? 'emal@email',
+                            userName: widget.user?.user?.displayName ?? 'name',
+                            userId: widget.user?.user?.uid ?? 'Not Found',
+                          ),
                         ));
                   },
                 ),
               ),
             ],
-            backgroundColor: const Color(0xffFAFAFA),
             elevation: 0,
           ),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 7.5),
-                child: Text(
-                  'Hi ${widget.user?.user?.displayName ?? 'User'},',
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 35,
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 5),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    FlutterSwitch(
-                      width: 70,
-                      height: 33,
-                      value: dataController.startListenToAPI,
-                      padding: 6.0,
-                      activeColor: const Color(0xFF4CB6BD),
-                      showOnOff: false,
-                      onToggle: (value) {
-                        setState(() {
-                          dataController.startListenToAPI = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Text(dataController.startListenToAPI
-                        ? 'stop listening'
-                        : "start listening"),
-                  ],
-                ),
-              ),
-              const Divider(thickness: 1.4),
-              MethodItemListview(controller: dataController),
-              const Spacer(),
-              dataController.startListenToAPI
-                  ? SizedBox(
-                      height: 265,
-                      child: Column(
-                        children: [
-                          DataItem(
-                            flutterTts: _flutterTts,
-                            upperText: 'Move your hand, please!',
-                            color: Theme.of(context).primaryColor,
-                            innerText: sensorController.gloveText,
-                          ),
-                          const Spacer(),
-                          DataItem(
-                            flutterTts: _flutterTts,
-                            upperText: _speechToText.isListening
-                                ? 'listening...'
-                                : _speechEnabled
-                                    ? 'Tap the mic to start listening... '
-                                    : 'Speech not available',
-                            color: Colors.red,
-                            innerText: _wordsSpoken,
-                          ),
-                        ],
-                      ),
-                    )
-                  : Center(
-                      child: SizedBox(
-                        height: 365,
-                        child:
-                            Lottie.asset('assets/Animated_glove _image.json'),
-                        /*const Image(
-                        height: 330,
-                        width: double.infinity,
-                        image: NetworkImage('',
-                          'https://st4.depositphotos.com/12229170/26475/v/450/depositphotos_264750432-stock-illustration-goalkeeper-gloves-thin-line-icon.jpg',
-                        ),
-                      ),*/
-                      ),
-                    ),
-              if (_speechToText.isNotListening && _confidence > 0)
-                Center(
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 7.5),
                   child: Text(
-                    '${(_confidence * 100).toStringAsFixed(1)}%',
-                    style: const TextStyle(
-                        fontSize: 25, fontWeight: FontWeight.w200),
+                    'Hi ${widget.user?.user?.displayName ?? 'User'},',
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.titleLarge?.color ??
+                          kPrimaryColor,
+                      fontSize: 35,
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              const Spacer(),
-              const SizedBox(height: 110),
-            ],
+                const SizedBox(height: 5),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      FlutterSwitch(
+                        width: 70,
+                        height: 33,
+                        value: dataController.startListenToAPI,
+                        padding: 6.0,
+                        activeColor: kPrimaryColor,
+                        showOnOff: false,
+                        onToggle: (value) {
+                          setState(() {
+                            dataController.startListenToAPI = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(dataController.startListenToAPI
+                          ? 'stop listening'
+                          : "start listening"),
+                    ],
+                  ),
+                ),
+                const Divider(thickness: 1.4),
+                MethodItemListview(controller: dataController),
+                //const Spacer(),
+                const SizedBox(height: 50),
+                dataController.startListenToAPI
+                    ? SizedBox(
+                        height: 300,
+                        child: Column(
+                          children: [
+                            DataItem(
+                              flutterTts: _flutterTts,
+                              upperText: 'Move your hand, please!',
+                              color: Theme.of(context).primaryColor,
+                              innerText: sensorController.gloveText,
+                            ),
+                            //const Spacer(),
+                            DataItem(
+                              flutterTts: _flutterTts,
+                              upperText: _speechToText.isListening
+                                  ? 'listening...'
+                                  : _speechEnabled
+                                      ? 'Tap the mic to start listening... '
+                                      : 'Speech not available',
+                              color: Colors.red,
+                              innerText: _wordsSpoken,
+                            ),
+                            if (_speechToText.isNotListening && _confidence > 0)
+                              Center(
+                                child: Text(
+                                  '${(_confidence * 100).toStringAsFixed(1)}%',
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge
+                                              ?.color ??
+                                          kPrimaryColor,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w200),
+                                ),
+                              ),
+                          ],
+                        ),
+                      )
+                    : Center(
+                        child: SizedBox(
+                          height: 365,
+                          child:
+                              Lottie.asset('assets/Animated_glove _image.json'),
+                          /*const Image(
+                          height: 330,
+                          width: double.infinity,
+                          image: NetworkImage('',
+                            'https://st4.depositphotos.com/12229170/26475/v/450/depositphotos_264750432-stock-illustration-goalkeeper-gloves-thin-line-icon.jpg',
+                          ),
+                        ),*/
+                        ),
+                      ),
+
+                //const Spacer(),
+                //const SizedBox(height: 110),
+              ],
+            ),
           ),
           floatingActionButton: FloatingActionButton(
             tooltip: 'Listen',

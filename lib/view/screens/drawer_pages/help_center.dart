@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sign_talk_app/core/utils/constants.dart';
 
 import '../../widgets/curved_container.dart';
 
@@ -9,36 +10,21 @@ class HelpCenterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      /* appBar: AppBar(
+       appBar: AppBar(
+         backgroundColor: kPrimaryColor,
+         foregroundColor: Colors.white,
+         elevation: 0,
         title: const Text('Help Center'),
-        actions: const [
-          Icon(Icons.help_center_outlined,),
-        ],
-      ),*/
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          CurvedBottomContainer(
-            press: () => Navigator.pop(context), // Simplified navigation
-          ),
-          Stack(
-            children: [
-              Image.asset(
-                'assets/images/sign-talk.png',
-                width: double.infinity,
-                fit: BoxFit.contain,
-                height: size.height * 0.25,
-              ),
-              const Positioned(
-                top: 40,
-                left: 10,
-                child: Text(
-                  'Helping hands for every query.',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
+          Image.asset(
+            'assets/images/help_center.jpg',
+            width: double.infinity,
+            fit: BoxFit.cover,
+            //height: size.height * 0.25,
           ),
           const SizedBox(
             height: 10,

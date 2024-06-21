@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sign_talk_app/view/screens/drawer_pages/bug_report_page.dart';
 import 'package:sign_talk_app/view/screens/edit_glove_mode/edit_glove_mode.dart';
 import 'package:sign_talk_app/view/screens/home_view.dart';
 import 'package:sign_talk_app/view/screens/splash/splash-view.dart';
 import 'package:sign_talk_app/view/screens/search_for_device/search_for_device.dart';
 
 import '../../view/screens/drawer_pages/help_center.dart';
-import '../../view/screens/drawer_pages/tutorial_page_body.dart';
+import '../../view/screens/drawer_pages/tutorial_page.dart';
 import '../../view/screens/login_register/sign_in.dart';
 import '../../view/screens/login_register/sign_up.dart';
 import '../../view/screens/drawer_pages/choose-language.dart';
@@ -23,6 +24,7 @@ abstract class AppRouter {
   static const kEditWords = '/editWords';
   static const kTutorialPage = '/tutorialPage';
   static const kHelpCenterPage = '/helpCenterPage';
+  static const kBugReportPage = '/bugReportPage';
   static final GoRouter router = GoRouter(
     routes: <RouteBase>[
       GoRoute(
@@ -71,6 +73,10 @@ abstract class AppRouter {
         path: kHelpCenterPage,
         builder: (BuildContext context, GoRouterState state) =>
             const HelpCenterPage(),
+      ),GoRoute(
+        path: kBugReportPage,
+        builder: (BuildContext context, GoRouterState state) =>
+            const BugReportPage(),
       ),
     ],
   );
