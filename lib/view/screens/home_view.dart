@@ -86,6 +86,13 @@ class _HomeViewState extends State<HomeView> {
     _flutterTts.setVoice({"name": voice["name"], "locale": voice["locale"]});
   }
 
+  Future<void> _handleRefresh() async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    GoRouter.of(context).pop();
+    GoRouter.of(context)
+        .push(AppRouter.kHomeView, extra: widget.user);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer2<DataController, SensorController>(
@@ -127,111 +134,104 @@ class _HomeViewState extends State<HomeView> {
             ],
             elevation: 0,
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 7.5),
-                  child: Text(
-                    'Hi ${widget.user?.user?.displayName ?? 'User'},',
-                    style: TextStyle(
-                      color: Theme.of(context).textTheme.titleLarge?.color ??
-                          kPrimaryColor,
-                      fontSize: 35,
-                      fontFamily: 'Lato',
-                      fontWeight: FontWeight.w500,
+          body: RefreshIndicator(
+            onRefresh: _handleRefresh,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 7.5),
+                    child: Text(
+                      'Hi ${widget.user?.user?.displayName ?? 'User'},',
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.titleLarge?.color ??
+                            kPrimaryColor,
+                        fontSize: 35,
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      FlutterSwitch(
-                        width: 70,
-                        height: 33,
-                        value: dataController.startListenToAPI,
-                        padding: 6.0,
-                        activeColor: kPrimaryColor,
-                        showOnOff: false,
-                        onToggle: (value) {
-                          setState(() {
-                            dataController.startListenToAPI = value;
-                          });
-                        },
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text(dataController.startListenToAPI
-                          ? 'stop listening'
-                          : "start listening"),
-                    ],
+                  const SizedBox(height: 5),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        FlutterSwitch(
+                          width: 70,
+                          height: 33,
+                          value: dataController.startListenToAPI,
+                          padding: 6.0,
+                          activeColor: kPrimaryColor,
+                          showOnOff: false,
+                          onToggle: (value) {
+                            setState(() {
+                              dataController.startListenToAPI = value;
+                            });
+                          },
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Text(dataController.startListenToAPI
+                            ? 'stop listening'
+                            : "start listening"),
+                      ],
+                    ),
                   ),
-                ),
-                const Divider(thickness: 1.4),
-                MethodItemListview(controller: dataController),
-                //const Spacer(),
-                const SizedBox(height: 50),
-                dataController.startListenToAPI
-                    ? SizedBox(
-                        height: 300,
-                        child: Column(
-                          children: [
-                            DataItem(
-                              flutterTts: _flutterTts,
-                              upperText: 'Move your hand, please!',
-                              color: Theme.of(context).primaryColor,
-                              innerText: sensorController.gloveText,
-                            ),
-                            //const Spacer(),
-                            DataItem(
-                              flutterTts: _flutterTts,
-                              upperText: _speechToText.isListening
-                                  ? 'listening...'
-                                  : _speechEnabled
-                                      ? 'Tap the mic to start listening... '
-                                      : 'Speech not available',
-                              color: Colors.red,
-                              innerText: _wordsSpoken,
-                            ),
-                            if (_speechToText.isNotListening && _confidence > 0)
-                              Center(
-                                child: Text(
-                                  '${(_confidence * 100).toStringAsFixed(1)}%',
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                              .textTheme
-                                              .titleLarge
-                                              ?.color ??
-                                          kPrimaryColor,
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w200),
-                                ),
+                  const Divider(thickness: 1.4),
+                  MethodItemListview(controller: dataController),
+                  const SizedBox(height: 50),
+                  dataController.startListenToAPI
+                      ? SizedBox(
+                          height: 300,
+                          child: Column(
+                            children: [
+                              DataItem(
+                                flutterTts: _flutterTts,
+                                upperText: 'Move your hand, please!',
+                                color: Theme.of(context).primaryColor,
+                                innerText: sensorController.gloveText,
                               ),
-                          ],
-                        ),
-                      )
-                    : Center(
-                        child: SizedBox(
-                          height: 365,
-                          child:
-                              Lottie.asset('assets/Animated_glove _image.json'),
-                          /*const Image(
-                          height: 330,
-                          width: double.infinity,
-                          image: NetworkImage('',
-                            'https://st4.depositphotos.com/12229170/26475/v/450/depositphotos_264750432-stock-illustration-goalkeeper-gloves-thin-line-icon.jpg',
+                              DataItem(
+                                flutterTts: _flutterTts,
+                                upperText: _speechToText.isListening
+                                    ? 'listening...'
+                                    : _speechEnabled
+                                        ? 'Tap the mic to start listening... '
+                                        : 'Speech not available',
+                                color: Colors.red,
+                                innerText: _wordsSpoken,
+                              ),
+                              if (_speechToText.isNotListening &&
+                                  _confidence > 0)
+                                Center(
+                                  child: Text(
+                                    '${(_confidence * 100).toStringAsFixed(1)}%',
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge
+                                                ?.color ??
+                                            kPrimaryColor,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w200),
+                                  ),
+                                ),
+                            ],
                           ),
-                        ),*/
+                        )
+                      : Center(
+                          child: SizedBox(
+                            height: 365,
+                            child: Lottie.asset(
+                                'assets/Animated_glove _image.json'),
+                          ),
                         ),
-                      ),
-
-                //const Spacer(),
-                //const SizedBox(height: 110),
-              ],
+                ],
+              ),
             ),
           ),
           floatingActionButton: FloatingActionButton(

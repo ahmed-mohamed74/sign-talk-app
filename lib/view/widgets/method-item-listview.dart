@@ -31,6 +31,7 @@ class _MethodItemListviewState extends State<MethodItemListview> {
       isLoading = true; // Set loading state to true
     });
     try {
+      await Future.delayed(const Duration(milliseconds: 300));
       modesList = await ApiService.getModes();
       widget.controller.changeWords(modesList);
     } catch (error) {
@@ -70,81 +71,84 @@ class _MethodItemListviewState extends State<MethodItemListview> {
         const Spacer(),
         IconButton(
           icon: const Icon(Icons.add),
-          onPressed: () => _showNewModeDialog(context,widget.controller),
+          onPressed: () => _showNewModeDialog(context, widget.controller),
         ),
       ],
     );
   }
-}
 
-void _showNewModeDialog(BuildContext context,DataController controller) {
-  final TextEditingController modeNameController = TextEditingController();
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('Enter Mode Name'),
-      content: TextField(
-        controller: modeNameController,
-        decoration: const InputDecoration(hintText: 'Enter mode name'),
+  void _showNewModeDialog(BuildContext context, DataController controller) {
+    final TextEditingController modeNameController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Enter Mode Name'),
+        content: TextField(
+          controller: modeNameController,
+          decoration: const InputDecoration(hintText: 'Enter mode name'),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              final modeName = modeNameController.text;
+              if (modeName.isNotEmpty) {
+                fCreateMode(modeName, context); // Call createMode function
+                // Show success message after successful creation (e.g., snackbar)
+                Navigator.pop(context);
+                await _fetchData();
+                widget.controller.changeGloveMode(modesList!.length-1);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                      content: Text('Mode "$modeName" created successfully!')),
+                );
+              } else {
+                // Show error snackbar if mode name is empty
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Please enter a mode name')),
+                );
+              }
+            },
+            child: const Text('OK'),
+          ),
+        ],
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () {
-            final modeName = modeNameController.text;
-            if (modeName.isNotEmpty) {
-              Navigator.pop(context);
-              fCreateMode(modeName, context); // Call createMode function
-              // Show success message after successful creation (e.g., snackbar)
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Mode "$modeName" created successfully!')),
-              );
-            } else {
-              // Show error snackbar if mode name is empty
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Please enter a mode name')),
-              );
-            }
-          },
-          child: const Text('OK'),
-        ),
-      ],
-    ),
-  );
-}
-
-Future<void> fCreateMode(String modeName, context) async {
-  try {
-    // Assuming DataController provides a way to create a new mode
-    final mode = Mode(
-      modeName: modeName,
-      a: '',
-      b: '',
-      c: '',
-      d: '',
-      e: '',
-      f: '',
-      g: '',
-      h: '',
-      i: '',
-      j: '',
-      k: '',
-      l: '',
-      m: '',
-      n: '',
     );
+  }
 
-    // Call ApiService to create the new mode on the server
-    await ApiService.createMode(mode);
+  Future<void> fCreateMode(String modeName, context) async {
+    try {
+      // Assuming DataController provides a way to create a new mode
+      final mode = Mode(
+        modeName: modeName,
+        a: '',
+        b: '',
+        c: '',
+        d: '',
+        e: '',
+        f: '',
+        g: '',
+        h: '',
+        i: '',
+        j: '',
+        k: '',
+        l: '',
+        m: '',
+        n: '',
+      );
 
-    // Consider refreshing data or reloading the page (optional)
-  } catch (error) {
-    // Handle errors (e.g., display error message)
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error creating mode: $error')),
-    );
+      // Call ApiService to create the new mode on the server
+      await ApiService.createMode(mode);
+
+      // Consider refreshing data or reloading the page (optional)
+    } catch (error) {
+      // Handle errors (e.g., display error message)
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error creating mode: $error')),
+      );
+    }
   }
 }
