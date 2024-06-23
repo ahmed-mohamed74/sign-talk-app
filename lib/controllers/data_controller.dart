@@ -91,6 +91,14 @@ class DataController extends ChangeNotifier {
     //notifyListeners();
     return words;
   }
+  Future<void> fetchData() async {
+    // Add your actual data fetching logic here (API calls, database access, etc.)
+    // For demonstration, we'll just simulate a 2-second delay
+    await Future.delayed(const Duration(milliseconds: 300));
+    // Once your data is fetched, update the relevant variables in your controller
+    // (e.g., a list of methods)
+    notifyListeners(); // This will notify all listening widgets about the change
+  }
 }
 
 /*
