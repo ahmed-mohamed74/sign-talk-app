@@ -37,7 +37,7 @@
   <h2>🎬 App Demo</h2>
   <p>Watch the <b>Sign Talk</b> prototype in action.</p>
 
-  <video src="https://github.com/ahmed-mohamed74/sign-talk-app/assets/demo/graduation_project.mp4" width="800" controls>
+  <video src="https://github.com/ahmed-mohamed74/sign-talk-app/raw/main/assets/demo/graduation_project.mp4" width="800" controls>
     Your browser does not support the video tag.
   </video>
 </div>
