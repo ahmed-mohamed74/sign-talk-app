@@ -2,8 +2,6 @@
   <h1> 🤟 Sign Talk </h1>
   <p><b>Bridging the communication gap between the Deaf community and the hearing world.</b></p>
   <p><i>🎓 A Graduation Project Prototype</i></p>
-
-  <a href="https://github.com/ahmed-mohamed74"><strong>View Repository »</strong></a>
 </div>
 
 <br />
@@ -34,12 +32,14 @@
 
 ## 🎬 App Demo
 <div align="center">
-  <h2>🎬 App Demo</h2>
-  <p>Watch the <b>Sign Talk</b> prototype in action.</p>
+  <p>Watch the <b>Sign Talk</b> prototype in action, demonstrating real-time gesture recognition and speech-to-text functionality.</p>
 
-  <video src="https://github.com/ahmed-mohamed74/sign-talk-app/raw/main/assets/demo/graduation_project.mp4" width="800" controls>
-    Your browser does not support the video tag.
+  <video src="https://github.com/user-attachments/assets/ba714136-6fd9-4f34-bfa2-09513823927f" width="100%" controls>
+    Your browser does not support the video tag. 
+    <a href="https://github.com/user-attachments/assets/ba714136-6fd9-4f34-bfa2-09513823927f">Click here to download the video.</a>
   </video>
+  
+  <p><i>Note: If the video does not play automatically, please click the play button.</i></p>
 </div>
 
 ---
